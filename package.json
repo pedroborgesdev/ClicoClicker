@@ -1,0 +1,95 @@
+{
+  "name": "clicoclicker",
+  "private": true,
+  "version": "0.0.0",
+  "main": "build/electron/electron.js",
+  "author": {
+    "name": "Pedro Borges",
+    "email": "pedrofilipe.github@gmail.com"
+  },
+  "description": "Auto Clicker Client",
+  "scripts": {
+    "dev": "vite --port 4000",
+    "build": "tsc --noEmit && vite build && tsc --project tsconfig.electron.json",
+    "serve": "vite preview",
+    "compile:nuitka": "node compile-scripts.js",
+    "electron": "wait-on tcp:4000 && cross-env IS_DEV=true electron .",
+    "electron:dev": "tsc --project tsconfig.electron.json && concurrently -k \"npm run electron\" \"cross-env BROWSER=none npm run dev\"",
+    "electron:pack": "electron-builder --dir",
+    "app:build": "npm run build:for:electron && npm run electron:builder",
+    "build:for:electron": "tsc --noEmit && cross-env ELECTRON=true vite build && tsc --project tsconfig.electron.json",
+    "electron:builder": "electron-builder"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^7.1.0",
+    "@fortawesome/free-solid-svg-icons": "^7.1.0",
+    "@fortawesome/react-fontawesome": "^3.1.0",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "framer-motion": "^12.23.22",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "wait-on": "^8.0.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "electron": "^33.2.1",
+    "electron-builder": "^25.1.8",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^15.14.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.6.2",
+    "typescript-eslint": "^8.18.2",
+    "vite": "^6.0.5"
+  },
+  "build": {
+    "appId": "com.clicoclicker.package",
+    "productName": "clicoclicker",
+    "copyright": "Copyright © 2025 Pedro Borges",
+    "files": [
+      "build/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "build/scripts/",
+        "to": "scripts"
+      }
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist"
+    },
+    "mac": {
+      "icon": "./src/assets/com.clicoclicker.icns",
+      "category": "public.app-category.utilities",
+      "extendInfo": {
+        "CFBundleDisplayName": "ClicoClicker"
+      }
+    },
+    "linux": {
+      "icon": "./src/assets/com.clicoclicker.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "desktop": {
+        "Name": "ClicoClicker"
+      }
+    },
+    "deb": {
+      "afterInstall": "./after-install.sh"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "shortcutName": "ClicoClicker"
+    }
+  }
+}
