@@ -59,7 +59,11 @@
     "extraResources": [
       {
         "from": "build/scripts/",
-        "to": "scripts"
+        "to": "scripts",
+        "filter": [
+          "**/*",     
+          "!tmp_build/**" 
+        ]
       }
     ],
     "directories": {
