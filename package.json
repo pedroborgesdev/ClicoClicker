@@ -77,6 +77,11 @@
         "CFBundleDisplayName": "ClicoClicker"
       }
     },
+    "win": {
+      "target": "nsis",
+      "icon": "./src/assets/com.clicoclicker.ico",
+      "artifactName": "ClicoClicker-Setup-${version}.${ext}"
+    },
     "linux": {
       "icon": "./src/assets/com.clicoclicker.png",
       "target": [
