@@ -80,7 +80,7 @@
     "win": {
       "target": "nsis",
       "icon": "./src/assets/com.clicoclicker.ico",
-      "artifactName": "ClicoClicker-Setup-${version}.${ext}"
+      "artifactName": "ClicoClicker-Setup-${version}-${arch}.${ext}"
     },
     "linux": {
       "icon": "./src/assets/com.clicoclicker.png",
@@ -90,7 +90,8 @@
       ],
       "desktop": {
         "Name": "ClicoClicker"
-      }
+      },
+      "artifactName": "ClicoClicker-${version}-${arch}.${ext}"
     },
     "deb": {
       "afterInstall": "./after-install.sh"
