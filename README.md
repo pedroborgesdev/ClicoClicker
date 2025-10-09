@@ -8,6 +8,10 @@
   <strong>A powerful and modern auto clicker client built with Electron, React, TypeScript and Python.</strong>
 </p>
 
+<p align="center">
+  Visit our official website at <a href="https://clicoclicker.com">clicoclicker.com</a> for downloads and more information.
+</p>
+
 ## Table of Contents
 - [About](#about)
 - [Features](#features)
