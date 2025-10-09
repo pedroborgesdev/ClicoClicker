@@ -1,7 +1,7 @@
 {
   "name": "clicoclicker",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "build/electron/electron.js",
   "author": {
     "name": "Pedro Borges",
