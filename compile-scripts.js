@@ -36,5 +36,5 @@ pythonScripts.forEach(script => {
   }
 });
 
-// fs.rmSync(tmpDir, { recursive: true, force: true });
+fs.rmSync(tmpDir, { recursive: true, force: true });
 console.log("\n[Build] Cleanup complete. Build finished!");
