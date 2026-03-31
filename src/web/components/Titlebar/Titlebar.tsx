@@ -17,7 +17,6 @@ function Titlebar() {
             
             <div className="flex-1 pl-1 flex items-center gap-2.5">
                 <img src={logoIcon} alt="Clico Logo" className="w-5 h-5 drop-shadow-sm" />
-                <span className="text-[11px] font-semibold tracking-wider uppercase text-white/30">Clico</span>
             </div>
 
             <div className="flex-shrink-0">
