@@ -11,10 +11,12 @@ const scriptPath = isDev
     : path.join(process.resourcesPath, 'scripts');
 
 const basePath = isDev
-    ? path.join(process.cwd(), 'src', 'python', 'Scripts')
-    : path.join(process.resourcesPath, 'python', 'Scripts');
+    ? path.join(process.cwd(), 'src', 'python')
+    : path.join(process.resourcesPath, 'python');
 
 const pyPath = path.join(basePath, 'python.exe');
+
+console.log(pyPath)
 
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {

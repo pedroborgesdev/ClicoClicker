@@ -15,8 +15,8 @@ function Titlebar() {
     return (
         <div className="titlebar w-screen flex justify-between items-center px-3 h-12 bg-black-900 rounded-t-2xl z-50">
             
-            <div className="flex-1 pl-2">
-                <img src={logoIcon} alt="Clico Logo" className="w-6 h-6" />
+            <div className="flex-1 pl-1 flex items-center gap-2.5">
+                <img src={logoIcon} alt="Clico Logo" className="w-5 h-5 drop-shadow-sm" />
             </div>
 
             <div className="flex-shrink-0 text-gray-400">
