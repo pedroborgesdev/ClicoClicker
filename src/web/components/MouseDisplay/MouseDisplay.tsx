@@ -33,12 +33,16 @@ const MouseDisplay: React.FC<MouseDisplayProps> = ({ desiredKey }) => {
   }, [desiredKey]); 
 
   return (
-    <div className="flex-shrink-0 flex pl-2 justify-center items-center md:w-auto">
+    <div className="flex-shrink-0 flex justify-center items-center relative">
+      {/* Subtle glow behind mouse */}
+      <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
+        <div className="w-32 h-48 rounded-full opacity-[0.06] blur-3xl" style={{ background: desiredKey === 'left' ? 'var(--accent-hex)' : 'var(--accent-secondary-hex)' }} />
+      </div>
       <img
         src={currentImage}
         alt={`Mouse ${desiredKey}`}
-        className={`h-[350px] drop-shadow-[0_4px_12px_rgba(0,0,0,0.5)] transition-opacity duration-300 ${
-          fadeState === "fade-in" ? "opacity-100" : "opacity-0"
+        className={`h-[320px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+          fadeState === "fade-in" ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       />
     </div>

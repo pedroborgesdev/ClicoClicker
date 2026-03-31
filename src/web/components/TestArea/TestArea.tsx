@@ -78,32 +78,33 @@ const TestArea: React.FC = () => {
             pushClick(performance.now());
           }
         }}
-        className="bg-black-dark-700 rounded-xl p-6 flex flex-col justify-between items-center h-48 cursor-pointer select-none shadow-xl"
-        style={{ userSelect: "none" }}
+        className="rounded-2xl p-5 flex flex-col justify-between items-center h-44 cursor-pointer select-none border border-white/[0.05] transition-all duration-200 hover:border-white/[0.08] active:scale-[0.995]"
+        style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.01) 100%)', userSelect: "none" }}
       >
-        <p className="text-gray-400">Click test area</p>
-        <div className="flex items-baseline gap-4">
-          <span className="text-lg text-slate-300">CPS:</span>
-          <span className="w-36 text-right text-6xl font-bold text-white">
+        <p className="text-white/25 text-xs font-medium tracking-wider uppercase">Click test area</p>
+        <div className="flex items-baseline gap-3">
+          <span className="text-sm text-white/30 font-medium">CPS</span>
+          <span className="w-32 text-right text-5xl font-bold text-white tabular-nums">
             {displayCps.toFixed(2)}
           </span>
         </div>
-        <div className="flex gap-4 items-center mt-2">
-          <span className="text-gray-800 text-sm">Clicks (1s): {windowClicks}</span>
-          <span className="text-gray-800 text-sm">Total: {totalClicksRef.current}</span>
+        <div className="flex gap-4 items-center">
+          <span className="text-white/15 text-xs font-medium">Clicks (1s): <span className="text-white/30">{windowClicks}</span></span>
+          <span className="text-white/15 text-xs font-medium">Total: <span className="text-white/30">{totalClicksRef.current}</span></span>
           <button
             onClick={(e) => { e.stopPropagation(); resetAll(); }}
-            className="ml-4 text-xs px-4 py-2 rounded text-gray-400 bg-black-dark-500 hover:bg-black-dark-400 transition-colors"
+            className="ml-2 text-[10px] px-3 py-1.5 rounded-lg text-white/30 border border-white/[0.06] hover:border-white/[0.12] hover:text-white/50 transition-all duration-200 font-medium tracking-wide uppercase"
+            style={{ background: 'rgba(255,255,255,0.03)' }}
           >
             Reset
           </button>
         </div>
       </div>
       
-      <div className="flex flex-row justify-center items-center gap-2 text-center text-sm text-gray-800 mt-3">
-        <FontAwesomeIcon icon={faExclamationTriangle} className="w-3"/>
-        <p className="text-center text-sm text-gray-800 mt-3 pb-3">
-          In 'hold-to-click' mode, the side mouse buttons may not work correctly in THIS test area.
+      <div className="flex flex-row justify-center items-center gap-2 mt-2.5 mb-1">
+        <FontAwesomeIcon icon={faExclamationTriangle} className="w-2.5 text-white/15"/>
+        <p className="text-[10px] text-white/15 font-medium">
+          In 'hold-to-click' mode, side mouse buttons may not work in this test area.
         </p>
       </div>
     </div>
