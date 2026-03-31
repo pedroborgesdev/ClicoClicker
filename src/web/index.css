@@ -2,11 +2,95 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Theme Definitions ── */
+:root,
+[data-theme="ocean"] {
+  --accent: 91, 141, 239;
+  --accent-hex: #5B8DEF;
+  --accent-gradient-from: #4A7DE0;
+  --accent-gradient-to: #3565C4;
+  --accent-secondary: 159, 77, 255;
+  --accent-secondary-hex: #9F4DFF;
+  --bg-gradient: linear-gradient(170deg, #0f0f14 0%, #121218 40%, #0e1117 100%);
+  --titlebar-from: rgba(25, 25, 35, 0.98);
+  --titlebar-to: rgba(18, 18, 24, 0.98);
+  --intro-bg: linear-gradient(170deg, #0f0f14 0%, #121218 40%, #0e1117 100%);
+  --dropdown-from: rgba(16, 18, 30, 0.98);
+  --dropdown-to: rgba(12, 14, 24, 0.98);
+  --dropdown-border: rgba(91, 141, 239, 0.1);
+}
+
+[data-theme="crimson"] {
+  --accent: 239, 68, 68;
+  --accent-hex: #EF4444;
+  --accent-gradient-from: #DC4A4A;
+  --accent-gradient-to: #B83535;
+  --accent-secondary: 251, 146, 60;
+  --accent-secondary-hex: #FB923C;
+  --bg-gradient: linear-gradient(170deg, #140f0f 0%, #181214 40%, #170e11 100%);
+  --titlebar-from: rgba(35, 22, 25, 0.98);
+  --titlebar-to: rgba(24, 16, 18, 0.98);
+  --intro-bg: linear-gradient(170deg, #140f0f 0%, #181214 40%, #170e11 100%);
+  --dropdown-from: rgba(30, 14, 16, 0.98);
+  --dropdown-to: rgba(22, 10, 12, 0.98);
+  --dropdown-border: rgba(239, 68, 68, 0.1);
+}
+
+[data-theme="emerald"] {
+  --accent: 52, 211, 153;
+  --accent-hex: #34D399;
+  --accent-gradient-from: #2DB885;
+  --accent-gradient-to: #1F9A6C;
+  --accent-secondary: 56, 189, 248;
+  --accent-secondary-hex: #38BDF8;
+  --bg-gradient: linear-gradient(170deg, #0c140f 0%, #0f1812 40%, #0b170e 100%);
+  --titlebar-from: rgba(20, 35, 25, 0.98);
+  --titlebar-to: rgba(14, 24, 18, 0.98);
+  --intro-bg: linear-gradient(170deg, #0c140f 0%, #0f1812 40%, #0b170e 100%);
+  --dropdown-from: rgba(12, 26, 18, 0.98);
+  --dropdown-to: rgba(8, 20, 14, 0.98);
+  --dropdown-border: rgba(52, 211, 153, 0.1);
+}
+
+[data-theme="violet"] {
+  --accent: 168, 85, 247;
+  --accent-hex: #A855F7;
+  --accent-gradient-from: #9333EA;
+  --accent-gradient-to: #7E22CE;
+  --accent-secondary: 236, 72, 153;
+  --accent-secondary-hex: #EC4899;
+  --bg-gradient: linear-gradient(170deg, #110f18 0%, #14121c 40%, #120e1a 100%);
+  --titlebar-from: rgba(28, 22, 40, 0.98);
+  --titlebar-to: rgba(20, 16, 30, 0.98);
+  --intro-bg: linear-gradient(170deg, #110f18 0%, #14121c 40%, #120e1a 100%);
+  --dropdown-from: rgba(22, 16, 34, 0.98);
+  --dropdown-to: rgba(16, 12, 26, 0.98);
+  --dropdown-border: rgba(168, 85, 247, 0.1);
+}
+
+[data-theme="amber"] {
+  --accent: 245, 158, 11;
+  --accent-hex: #F59E0B;
+  --accent-gradient-from: #D97706;
+  --accent-gradient-to: #B45309;
+  --accent-secondary: 239, 68, 68;
+  --accent-secondary-hex: #EF4444;
+  --bg-gradient: linear-gradient(170deg, #14120c 0%, #18160f 40%, #17140b 100%);
+  --titlebar-from: rgba(38, 32, 18, 0.98);
+  --titlebar-to: rgba(26, 22, 14, 0.98);
+  --intro-bg: linear-gradient(170deg, #14120c 0%, #18160f 40%, #17140b 100%);
+  --dropdown-from: rgba(30, 26, 12, 0.98);
+  --dropdown-to: rgba(22, 18, 8, 0.98);
+  --dropdown-border: rgba(245, 158, 11, 0.1);
+}
+
 body {
     color: #fff;
     user-select: none;
+    background: transparent;
 }
 
+/* Hide number input spinners */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -15,4 +99,87 @@ input[type=number]::-webkit-outer-spin-button {
 
 input[type=number] {
   -moz-appearance: textfield;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Custom range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.1) 100%);
+  outline: none;
+  transition: background 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-gradient-from) 0%, var(--accent-gradient-to) 100%);
+  box-shadow: 0 0 8px rgba(var(--accent), 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 12px rgba(var(--accent), 0.7), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.05);
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtlePulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.4s ease-out both;
+}
+
+.animate-subtle-pulse {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
 }
