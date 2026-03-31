@@ -19,16 +19,16 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ isExiting }) => {
       {/* Ambient glow */}
       <div className="absolute w-64 h-64 rounded-full opacity-[0.08] blur-[80px] pointer-events-none" style={{ background: 'var(--accent-hex)' }} />
       
-      <div className="flex flex-col items-center text-center space-y-6 pb-12 relative z-10">
+      <div className="flex flex-col items-center text-center space-y-4 pb-8 relative z-10">
         <img
           src={ClicoIcon}
           alt="ClicoClicker logo"
-          className="w-36"
+          className="w-28"
           style={{ filter: `drop-shadow(0 0 40px rgba(var(--accent), 0.15))` }}
         />
 
         <div>
-          <h1 className="text-3xl font-bold text-white tracking-wide">
+          <h1 className="text-2xl font-bold text-white tracking-wide">
             ClicoClicker
           </h1>
           <p className="text-xs text-white/25 mt-2 font-medium tracking-widest uppercase">

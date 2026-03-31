@@ -40,7 +40,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
 
   return (
     <div
-      className="w-full flex items-center justify-between px-5 h-9 border-b border-white/[0.03]"
+      className="w-full flex items-center justify-between px-4 h-8 border-b border-white/[0.03]"
       style={{ background: 'rgba(255,255,255,0.015)' }}
     >
       {/* Left — GitHub links, icon only */}

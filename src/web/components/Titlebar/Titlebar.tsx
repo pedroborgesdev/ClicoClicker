@@ -13,7 +13,7 @@ function Titlebar() {
     }
 
     return (
-        <div className="titlebar w-screen flex justify-between items-center px-4 h-11 rounded-t-2xl z-50 border-b border-white/[0.04]" style={{ background: 'linear-gradient(180deg, var(--titlebar-from) 0%, var(--titlebar-to) 100%)' }}>
+        <div className="titlebar w-screen flex justify-between items-center px-4 h-9 rounded-t-2xl z-50 border-b border-white/[0.04]" style={{ background: 'linear-gradient(180deg, var(--titlebar-from) 0%, var(--titlebar-to) 100%)' }}>
             
             <div className="flex-1 pl-1 flex items-center gap-2.5">
                 <img src={logoIcon} alt="Clico Logo" className="w-5 h-5 drop-shadow-sm" />
