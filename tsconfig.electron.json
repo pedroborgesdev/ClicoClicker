@@ -7,6 +7,8 @@
         "esModuleInterop": true
     },
     "include": [
-        "src/electron/**/*"
+        "src/electron/**/*",
+        "src/scripts/**/*",
+        "src/python/**/*"
     ]
 }

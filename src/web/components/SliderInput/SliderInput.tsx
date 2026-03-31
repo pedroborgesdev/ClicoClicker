@@ -25,9 +25,9 @@ const SliderInput: React.FC<SliderInputProps> = ({ label, value, min, max, step 
   };
   
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2.5">
       <div className="flex justify-between items-center">
-        <label htmlFor={label} className="font-medium text-gray-200">{label}</label>
+        <label htmlFor={label} className="font-medium text-sm text-white/70">{label}</label>
         <input 
           id={label} 
           type="number" 
@@ -36,7 +36,8 @@ const SliderInput: React.FC<SliderInputProps> = ({ label, value, min, max, step 
           max={max} 
           onChange={handleInputChange} 
           onBlur={handleInputBlur} 
-          className="bg-black-dark-500 rounded-lg w-24 p-2 text-center font-bold text-lg focus:outline-none"
+          className="rounded-xl w-20 p-1.5 text-center font-bold text-base text-white/90 border border-white/[0.06] focus:outline-none focus:border-blue-500/30 transition-colors duration-200"
+          style={{ background: 'rgba(255,255,255,0.04)' }}
         />
       </div>
       <input 
@@ -46,7 +47,7 @@ const SliderInput: React.FC<SliderInputProps> = ({ label, value, min, max, step 
         step={step} 
         value={value} 
         onChange={(e) => onChange(Number(e.target.value))} 
-        className="w-full h-2 bg-black-dark-500 rounded-lg appearance-none group-enabled:cursor-pointer accent-blue-800 focus:outline-none"
+        className="w-full h-1.5 rounded-lg appearance-none group-enabled:cursor-pointer focus:outline-none"
       />
     </div>
   );
