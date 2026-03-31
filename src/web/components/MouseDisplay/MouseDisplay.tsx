@@ -41,7 +41,7 @@ const MouseDisplay: React.FC<MouseDisplayProps> = ({ desiredKey }) => {
       <img
         src={currentImage}
         alt={`Mouse ${desiredKey}`}
-        className={`h-[320px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition-all duration-300 ${
+        className={`h-[220px] drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition-all duration-300 ${
           fadeState === "fade-in" ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       />
