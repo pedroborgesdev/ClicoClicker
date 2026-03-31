@@ -6,19 +6,15 @@ const isDev = process.env.IS_DEV === "true";
 
 let clickerProcess: ChildProcessWithoutNullStreams | null = null;
 
-function getBinaryPath(binaryName: string): string {
-    const resourcesPath = process.resourcesPath; 
-    
-    const executableName = process.platform === 'win32' 
-        ? `${binaryName}.exe` 
-        : `${binaryName}.bin`;
+const scriptPath = isDev
+    ? path.join(process.cwd(), 'src', 'scripts')
+    : path.join(process.resourcesPath, 'scripts');
 
-    if (isDev) {
-        return path.join(process.cwd(), 'build', 'scripts', executableName);
-    }
+const basePath = isDev
+    ? path.join(process.cwd(), 'src', 'python', 'Scripts')
+    : path.join(process.resourcesPath, 'python', 'Scripts');
 
-    return path.join(resourcesPath, 'scripts', executableName);
-}
+const pyPath = path.join(basePath, 'python.exe');
 
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
@@ -81,10 +77,9 @@ ipcMain.handle('close-app', () => BrowserWindow.getFocusedWindow()?.close());
 
 ipcMain.handle('listen-for-hotkey', () => {
     return new Promise((resolve, reject) => {
-        const binaryPath = getBinaryPath('listen_hotkey');
-        console.log(`[Listen Hotkey] Executing Binary: ${binaryPath}`);
+        console.log(`[Listen Hotkey] Executing Binary: listen_hotkey.py`);
         
-        const binaryProcess = spawn(binaryPath);
+        const binaryProcess = spawn(pyPath, [path.join(scriptPath, 'listen_hotkey.py')]);
 
         const cleanup = () => {
             if (!binaryProcess || !binaryProcess.pid || binaryProcess.killed) {
@@ -143,8 +138,6 @@ ipcMain.handle('start-clicker', (event, settings) => {
         clickerProcess = null; 
     }
 
-    const binaryPath = getBinaryPath('auto_clicker');
-    
     const binaryArgs = [
         '--cps', settings.cps.toString(),
         '--variation', settings.variation.toString(),
@@ -156,9 +149,9 @@ ipcMain.handle('start-clicker', (event, settings) => {
         binaryArgs.push('--hold-to-click');
     }
 
-    console.log(`[Starting AutoClicker]: ${binaryPath} ${binaryArgs.join(' ')}`);
+    console.log(`[Starting AutoClicker]: auto_clicker.py with args: ${binaryArgs.join(' ')}`);
 
-    clickerProcess = spawn(binaryPath, binaryArgs);
+    clickerProcess = spawn(pyPath, [path.join(scriptPath, 'auto_clicker.py'), ...binaryArgs]);
     console.log(`[AutoClicker] New process started with PID: ${clickerProcess.pid}`);
 
     clickerProcess.stdout.on('data', (data) => {
