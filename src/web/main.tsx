@@ -3,6 +3,12 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 
+// Aplica o tema salvo antes do React renderizar, evitando flash sem tema
+const savedTheme = localStorage.getItem('clickerTheme');
+if (savedTheme) {
+  document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
 const rootElement = document.getElementById('root');
 
 if (rootElement) {

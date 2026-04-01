@@ -78,13 +78,13 @@ const TestArea: React.FC = () => {
             pushClick(performance.now());
           }
         }}
-        className="rounded-2xl p-5 flex flex-col justify-between items-center h-44 cursor-pointer select-none border border-white/[0.05] transition-all duration-200 hover:border-white/[0.08] active:scale-[0.995]"
+        className="rounded-2xl p-3 flex flex-col justify-between items-center h-32 cursor-pointer select-none border border-white/[0.05] transition-all duration-200 hover:border-white/[0.08] active:scale-[0.995]"
         style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.01) 100%)', userSelect: "none" }}
       >
         <p className="text-white/25 text-xs font-medium tracking-wider uppercase">Click test area</p>
-        <div className="flex items-baseline gap-3">
-          <span className="text-sm text-white/30 font-medium">CPS</span>
-          <span className="w-32 text-right text-5xl font-bold text-white tabular-nums">
+        <div className="flex items-baseline gap-2">
+          <span className="text-xs text-white/30 font-medium">CPS</span>
+          <span className="w-24 text-right text-3xl font-bold text-white tabular-nums">
             {displayCps.toFixed(2)}
           </span>
         </div>
@@ -101,7 +101,7 @@ const TestArea: React.FC = () => {
         </div>
       </div>
       
-      <div className="flex flex-row justify-center items-center gap-2 mt-2.5 mb-1">
+      <div className="flex flex-row justify-center items-center gap-2 mt-1.5 mb-0.5">
         <FontAwesomeIcon icon={faExclamationTriangle} className="w-2.5 text-white/15"/>
         <p className="text-[10px] text-white/15 font-medium">
           In 'hold-to-click' mode, side mouse buttons may not work in this test area.

@@ -2,7 +2,10 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette } from '@fortawesome/free-solid-svg-icons';
 
-export const THEMES = ['ocean', 'crimson', 'emerald', 'violet', 'amber'] as const;
+export const THEMES = [
+  'ocean', 'crimson', 'emerald', 'violet', 'amber',
+  'sky', 'lime', 'rose', 'slate', 'teal', 'indigo', 'gold'
+] as const;
 export type ThemeName = typeof THEMES[number];
 
 const THEME_COLORS: Record<ThemeName, string> = {
@@ -11,6 +14,13 @@ const THEME_COLORS: Record<ThemeName, string> = {
   emerald: '#34D399',
   violet:  '#A855F7',
   amber:   '#F59E0B',
+  sky:     '#38BDF8',
+  lime:    '#A3E635',
+  rose:    '#F43F5E',
+  slate:   '#64748B',
+  teal:    '#14B8A6',
+  indigo:  '#6366F1',
+  gold:    '#FFD700',
 };
 
 const THEME_LABELS: Record<ThemeName, string> = {
@@ -19,6 +29,13 @@ const THEME_LABELS: Record<ThemeName, string> = {
   emerald: 'Emerald',
   violet:  'Violet',
   amber:   'Amber',
+  sky:     'Sky',
+  lime:    'Lime',
+  rose:    'Rose',
+  slate:   'Slate',
+  teal:    'Teal',
+  indigo:  'Indigo',
+  gold:    'Gold',
 };
 
 interface ToolbarProps {
@@ -40,7 +57,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
 
   return (
     <div
-      className="w-full flex items-center justify-between px-5 h-9 border-b border-white/[0.03]"
+      className="w-full flex items-center justify-between px-4 h-8 border-b border-white/[0.03]"
       style={{ background: 'rgba(255,255,255,0.015)' }}
     >
       {/* Left — GitHub links, icon only */}
@@ -80,7 +97,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
       {/* Right — Theme label + selector */}
       <div className="no-drag flex items-center gap-2">
         <FontAwesomeIcon icon={faPalette} className="text-[10px] text-white/25" />
-        <span className="text-[10px] text-white/20 font-medium tracking-widest uppercase">Theme</span>
 
         <div className="relative" ref={ref}>
           {/* Trigger */}
@@ -115,8 +131,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
                 borderWidth: 1,
                 borderStyle: 'solid',
                 borderColor: 'var(--dropdown-border)',
-                backdropFilter: 'blur(16px)',
-                boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.05), 0 0 20px rgba(var(--accent), 0.04)`,
+                boxShadow: `0 8px 32px rgba(0,0,0,0.5), 0 0 1px rgba(255,255,255,0.05)`,
               }}
             >
               {THEMES.map((t) => (
@@ -131,8 +146,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
                   <div
                     className="w-2.5 h-2.5 rounded-full flex-shrink-0 transition-all duration-300"
                     style={{
-                      background: THEME_COLORS[t],
-                      boxShadow: currentTheme === t ? `0 0 8px ${THEME_COLORS[t]}60` : 'none',
+                      background: THEME_COLORS[t]
                     }}
                   />
                   <span>{THEME_LABELS[t]}</span>

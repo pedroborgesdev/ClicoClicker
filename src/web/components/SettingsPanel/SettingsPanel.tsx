@@ -51,10 +51,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
     };
 
     return (
-        <div className="flex-1 flex flex-col gap-4 min-w-0 rounded-2xl p-4 border border-white/[0.05]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)' }}>
+        <div className="flex-1 flex flex-col gap-2.5 min-w-0 rounded-2xl p-3 border border-white/[0.05]" style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)' }}>
             <fieldset 
                 disabled={isClicking} 
-                className={`group flex flex-col gap-4 transition-opacity duration-300 disabled:cursor-default ${
+                className={`group flex flex-col gap-2.5 transition-opacity duration-300 disabled:cursor-default ${
                     isClicking ? 'opacity-40' : 'opacity-100' 
                 }`}
             >
@@ -62,11 +62,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
                 <SliderInput label="Variation" value={props.variation} onChange={props.onVariationChange} min={0} max={20}/>
                 
                 <div className="flex justify-between items-center">
-                    <span className="font-medium text-sm text-white/70">Activate Hotkey</span>
+                    <span className="font-medium text-xs text-white/70">Activate Hotkey</span>
                     <button 
                         onClick={handleHotkeyButtonClick}
                         disabled={isListening}
-                        className={`rounded-xl px-4 py-2 font-semibold text-sm text-center flex items-center justify-center transition-all duration-200 w-28 border border-white/[0.06] ${isListening ? 'cursor-not-allowed text-white/30' : 'text-white/80 hover:border-white/[0.12] hover:bg-white/[0.04]'}`}
+                        className={`rounded-xl px-3 py-1.5 font-semibold text-xs text-center flex items-center justify-center transition-all duration-200 w-24 border border-white/[0.06] ${isListening ? 'cursor-not-allowed text-white/30' : 'text-white/80 hover:border-white/[0.12] hover:bg-white/[0.04]'}`}
                         style={{ background: 'rgba(255,255,255,0.04)' }}
                     >
                         {isListening ? 'Listening...' : hotkey}
@@ -74,10 +74,10 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
                 </div>
                 
                 <div className="flex justify-between items-center">
-                    <span className="font-medium text-sm text-white/70">Desired Key</span>
+                    <span className="font-medium text-xs text-white/70">Desired Key</span>
                     <div className="flex gap-1.5">
-                        <button onClick={() => onDesiredKeyChange('left')} className={`px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 border ${desiredKey === 'left' ? '' : 'border-white/[0.06] text-white/50 group-enabled:hover:text-white/70 group-enabled:hover:border-white/[0.12]'}`} style={desiredKey === 'left' ? { background: `rgba(var(--accent), 0.15)`, color: `rgb(var(--accent))`, borderColor: `rgba(var(--accent), 0.3)`, boxShadow: `0 0 12px rgba(var(--accent), 0.12)` } : { background: 'rgba(255,255,255,0.03)' }}>Left</button>
-                        <button onClick={() => onDesiredKeyChange('right')} className={`px-5 py-2 rounded-xl text-sm font-semibold transition-all duration-200 border ${desiredKey === 'right' ? '' : 'border-white/[0.06] text-white/50 group-enabled:hover:text-white/70 group-enabled:hover:border-white/[0.12]'}`} style={desiredKey === 'right' ? { background: `rgba(var(--accent-secondary), 0.15)`, color: `rgb(var(--accent-secondary))`, borderColor: `rgba(var(--accent-secondary), 0.3)`, boxShadow: `0 0 12px rgba(var(--accent-secondary), 0.12)` } : { background: 'rgba(255,255,255,0.03)' }}>Right</button>
+                        <button onClick={() => onDesiredKeyChange('left')} className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 border ${desiredKey === 'left' ? '' : 'border-white/[0.06] text-white/50 group-enabled:hover:text-white/70 group-enabled:hover:border-white/[0.12]'}`} style={desiredKey === 'left' ? { background: `rgba(var(--accent), 0.15)`, color: `rgb(var(--accent))`, borderColor: `rgba(var(--accent), 0.3)`, boxShadow: `0 0 12px rgba(var(--accent), 0.12)` } : { background: 'rgba(255,255,255,0.03)' }}>Left</button>
+                        <button onClick={() => onDesiredKeyChange('right')} className={`px-4 py-1.5 rounded-xl text-xs font-semibold transition-all duration-200 border ${desiredKey === 'right' ? '' : 'border-white/[0.06] text-white/50 group-enabled:hover:text-white/70 group-enabled:hover:border-white/[0.12]'}`} style={desiredKey === 'right' ? { background: `rgba(var(--accent-secondary), 0.15)`, color: `rgb(var(--accent-secondary))`, borderColor: `rgba(var(--accent-secondary), 0.3)` } : { background: 'rgba(255,255,255,0.03)' }}>Right</button>
                     </div>
                 </div>
 
@@ -85,18 +85,18 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
                     onClick={!isClicking ? onActiveToggle : undefined} 
                     className={`flex items-center gap-3 group-enabled:cursor-pointer`}
                 >
-                    <div className={`w-5 h-5 rounded-md flex justify-center items-center transition-all duration-200 border ${activeOnlyWhenPressed ? '' : 'border-white/[0.1] bg-white/[0.03]'}`} style={activeOnlyWhenPressed ? { background: `rgba(var(--accent), 0.2)`, borderColor: `rgba(var(--accent), 0.4)` } : {}}>
-                        {activeOnlyWhenPressed && <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" style={{ color: `rgb(var(--accent))` }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
+                    <div className={`w-4 h-4 rounded-md flex justify-center items-center transition-all duration-200 border ${activeOnlyWhenPressed ? '' : 'border-white/[0.1] bg-white/[0.03]'}`} style={activeOnlyWhenPressed ? { background: `rgba(var(--accent), 0.2)`, borderColor: `rgba(var(--accent), 0.4)` } : {}}>
+                        {activeOnlyWhenPressed && <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" style={{ color: `rgb(var(--accent))` }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>}
                     </div>
-                    <span className="font-medium text-sm text-white/70 select-none">Hold to click</span>
+                    <span className="font-medium text-xs text-white/70 select-none">Hold to click</span>
                 </div>
             </fieldset>
 
-            <div className="mt-auto pt-1 flex gap-3">
+            <div className="mt-auto pt-1 flex gap-2">
                 <button
                     onClick={onStart}
                     disabled={isClicking}
-                    className={`w-full flex items-center justify-center gap-2 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-200 text-sm disabled:cursor-not-allowed ${
+                    className={`w-full flex items-center justify-center gap-2 text-white font-bold py-2 px-3 rounded-xl transition-all duration-200 text-xs disabled:cursor-not-allowed ${
                         !isClicking ? 'hover:brightness-110' : 'opacity-30'
                     }`}
                     style={{ background: !isClicking ? 'linear-gradient(135deg, var(--accent-gradient-from) 0%, var(--accent-gradient-to) 100%)' : 'rgba(255,255,255,0.05)', boxShadow: !isClicking ? `0 0 16px rgba(var(--accent), 0.2)` : 'none' }}
@@ -107,7 +107,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
                 <button
                     onClick={onStop}
                     disabled={!isClicking}
-                    className={`w-full flex items-center justify-center gap-2 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-200 text-sm disabled:cursor-not-allowed ${
+                    className={`w-full flex items-center justify-center gap-2 text-white font-bold py-2 px-3 rounded-xl transition-all duration-200 text-xs disabled:cursor-not-allowed ${
                         isClicking ? 'shadow-[0_0_16px_rgba(239,68,68,0.2)] hover:shadow-[0_0_24px_rgba(239,68,68,0.3)] hover:brightness-110' : 'opacity-30'
                     }`}
                     style={{ background: isClicking ? 'linear-gradient(135deg, #DC4A4A 0%, #C43535 100%)' : 'rgba(255,255,255,0.05)' }}

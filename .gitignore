@@ -3,3 +3,5 @@ dist
 dist_electron
 build
 venv
+**/__pycache__/
+*.log

@@ -9,6 +9,6 @@
     "include": [
         "src/electron/**/*",
         "src/scripts/**/*",
-        "src/python/**/*"
+        "python/**/*"
     ]
 }

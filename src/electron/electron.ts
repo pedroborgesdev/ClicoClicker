@@ -10,18 +10,22 @@ const scriptPath = isDev
     ? path.join(process.cwd(), 'src', 'scripts')
     : path.join(process.resourcesPath, 'scripts');
 
-const basePath = isDev
-    ? path.join(process.cwd(), 'src', 'python')
-    : path.join(process.resourcesPath, 'python');
+const platform = process.platform === 'win32' ? 'win' : 'linux';
 
-const pyPath = path.join(basePath, 'python.exe');
+const basePath = isDev
+    ? path.join(process.cwd(), 'python', platform)
+    : path.join(process.resourcesPath, 'python', platform);
+
+const pyPath = process.platform === 'win32'
+    ? path.join(basePath, 'python.exe')
+    : path.join(basePath, 'python');
 
 console.log(pyPath)
 
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
-        width: 640,
-        height: 800,
+        width: 480,
+        height: 590,
         center: true,
         autoHideMenuBar: true,
         resizable: false,

@@ -64,24 +64,21 @@ function App() {
     }
   }, [cps, variation, hotkey, desiredKey, activeOnlyWhenPressed]);
   
-  // 3. Adicione este useEffect para controlar a animação da tela de introdução
+  // 3. Controla a animação da tela de introdução
   useEffect(() => {
-    // Inicia a animação de saída após 2 segundos
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 2000);
+    }, 1500);
 
-    // Remove o componente da árvore DOM após a animação terminar (2s + 0.7s de duração da animação)
     const unmountTimer = setTimeout(() => {
       setShowIntro(false);
-    }, 4000);
+    }, 3500);
 
-    // Limpa os timers se o componente for desmontado
     return () => {
       clearTimeout(exitTimer);
       clearTimeout(unmountTimer);
     };
-  }, []); // O array vazio [] garante que isso só rode uma vez
+  }, []);
 
   const handleStartClicker = async () => {
     const settings: ClickerSettings = {
@@ -110,11 +107,11 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col font-sans rounded-2xl overflow-hidden" style={{ background: 'var(--bg-gradient)' }}>
+    <div className="h-screen flex flex-col font-sans rounded-2xl overflow-hidden" style={{ background: 'var(--bg-gradient)' }}>
       <Titlebar />
       <Toolbar currentTheme={theme} onChangeTheme={handleThemeChange} />
 
-      <div className="relative flex flex-col items-center flex-grow isolate overflow-hidden rounded-b-2xl">
+      <div className="relative flex flex-col isolate overflow-hidden rounded-b-2xl flex-1">
         {/* Subtle ambient glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[300px] rounded-full opacity-[0.04] pointer-events-none" style={{ background: `radial-gradient(circle, var(--accent-hex) 0%, transparent 70%)` }} />
         
@@ -122,8 +119,8 @@ function App() {
         
         <ListeningOverlay isListening={isListening} />
         
-        <main className="flex-grow pt-5 rounded-2xl px-5 w-full max-w-4xl text-gray-200 flex flex-col items-center gap-5">
-          <div className="flex flex-row gap-5 w-full">
+        <main className="flex-1 pt-3 px-4 w-full max-w-4xl mx-auto text-gray-200 flex flex-col items-center gap-3 overflow-y-auto">
+          <div className="flex flex-row gap-3 w-full">
             <MouseDisplay desiredKey={desiredKey} />
             <SettingsPanel
               cps={cps}
@@ -146,7 +143,7 @@ function App() {
           <TestArea />
         </main>
 
-        <footer className="w-full z-50">
+        <footer className="w-full z-10">
           <AppInfo />
         </footer>
       </div>

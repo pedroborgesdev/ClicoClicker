@@ -12,7 +12,6 @@
     "dev": "vite --port 4000",
     "build": "tsc --noEmit && vite build && tsc --project tsconfig.electron.json",
     "serve": "vite preview",
-    "compile:nuitka": "node compile-scripts.js",
     "electron": "wait-on tcp:4000 && cross-env IS_DEV=true electron .",
     "electron:dev": "tsc --project tsconfig.electron.json && concurrently -k \"npm run electron\" \"cross-env BROWSER=none npm run dev\"",
     "electron:pack": "electron-builder --dir",
