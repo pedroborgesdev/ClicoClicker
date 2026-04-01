@@ -20,8 +20,8 @@ console.log(pyPath)
 
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
-        width: 520,
-        height: 640,
+        width: 480,
+        height: 590,
         center: true,
         autoHideMenuBar: true,
         resizable: false,

@@ -97,7 +97,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
       {/* Right — Theme label + selector */}
       <div className="no-drag flex items-center gap-2">
         <FontAwesomeIcon icon={faPalette} className="text-[10px] text-white/25" />
-        <span className="text-[10px] text-white/20 font-medium tracking-widest uppercase">Theme</span>
 
         <div className="relative" ref={ref}>
           {/* Trigger */}

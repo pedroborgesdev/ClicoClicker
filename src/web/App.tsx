@@ -64,24 +64,21 @@ function App() {
     }
   }, [cps, variation, hotkey, desiredKey, activeOnlyWhenPressed]);
   
-  // 3. Adicione este useEffect para controlar a animação da tela de introdução
+  // 3. Controla a animação da tela de introdução
   useEffect(() => {
-    // Inicia a animação de saída após 2 segundos
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 2000);
+    }, 1500);
 
-    // Remove o componente da árvore DOM após a animação terminar (2s + 0.7s de duração da animação)
     const unmountTimer = setTimeout(() => {
       setShowIntro(false);
-    }, 4000);
+    }, 3500);
 
-    // Limpa os timers se o componente for desmontado
     return () => {
       clearTimeout(exitTimer);
       clearTimeout(unmountTimer);
     };
-  }, []); // O array vazio [] garante que isso só rode uma vez
+  }, []);
 
   const handleStartClicker = async () => {
     const settings: ClickerSettings = {
