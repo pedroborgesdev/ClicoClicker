@@ -68,11 +68,11 @@ function App() {
   useEffect(() => {
     const exitTimer = setTimeout(() => {
       setIsExiting(true);
-    }, 1500);
+    }, 2500);
 
     const unmountTimer = setTimeout(() => {
       setShowIntro(false);
-    }, 3500);
+    }, 5500);
 
     return () => {
       clearTimeout(exitTimer);
