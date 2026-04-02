@@ -60,16 +60,16 @@
         "from": "src/scripts/",
         "to": "scripts",
         "filter": [
-          "**/*",     
-          "!tmp_build/**" 
+          "**/*",
+          "!tmp_build/**"
         ]
       },
       {
         "from": "src/python/",
         "to": "python",
         "filter": [
-          "**/*",     
-          "!tmp_build/**" 
+          "**/*",
+          "!tmp_build/**"
         ]
       }
     ],

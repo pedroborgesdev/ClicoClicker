@@ -20,8 +20,6 @@ const pyPath = process.platform === 'win32'
     ? path.join(basePath, 'python.exe')
     : path.join(basePath, 'python');
 
-console.log(pyPath)
-
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
         width: 480,
@@ -31,6 +29,7 @@ function createWindow(): void {
         resizable: false,
         frame: false,
         transparent: true,
+        backgroundColor: '#00000000',
         webPreferences: {
             preload: path.join(__dirname, 'preload.js'),
             nodeIntegration: false,
@@ -38,7 +37,17 @@ function createWindow(): void {
         }
     }; 
 
-    const mainWindow = new BrowserWindow(windowOptions);
+    const mainWindow = new BrowserWindow({ ...windowOptions, show: false });
+
+    mainWindow.once('ready-to-show', () => {
+        mainWindow.show();
+    });
+
+    mainWindow.webContents.on('before-input-event', (_event, input) => {
+        if (input.key === 'F11') {
+            _event.preventDefault();
+        }
+    });
 
     mainWindow.webContents.setWindowOpenHandler((edata) => {
         shell.openExternal(edata.url);
@@ -78,7 +87,15 @@ ipcMain.handle('maximize-app', () => {
     if (window?.isMaximized()) window.unmaximize();
     else window?.maximize();
 });
-ipcMain.handle('close-app', () => BrowserWindow.getFocusedWindow()?.close());
+ipcMain.handle('close-app', () => {
+    console.log('[App] Close requested from renderer, terminating clicker process if running and closing app.');
+    if (clickerProcess) {
+        console.log(`[App] Terminating clicker process with PID: ${clickerProcess.pid}`);
+        clickerProcess.kill('SIGKILL');
+        clickerProcess = null;
+    }
+    BrowserWindow.getFocusedWindow()?.close();
+});
 
 
 ipcMain.handle('listen-for-hotkey', () => {
