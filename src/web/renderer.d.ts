@@ -1,3 +1,5 @@
+import type { ClickerSettings, BurstClickerSettings } from './types';
+
 export interface IElectronAPI {
     doThing: () => void;
     minimizeApp: () => void;
@@ -5,6 +7,7 @@ export interface IElectronAPI {
     closeApp: () => void;
     listenForHotkey: () => Promise<string>;
     startClicker: (settings: ClickerSettings) => Promise<void>;
+    startBurstClicker: (settings: BurstClickerSettings) => Promise<void>;
     stopClicker: () => Promise<boolean>;
 }
 
