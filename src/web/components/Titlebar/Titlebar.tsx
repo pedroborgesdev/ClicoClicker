@@ -1,4 +1,3 @@
-import logoIcon from '../../assets/icon.svg'; 
 import minimizeIcon from './icons/minimize-icon.svg';
 import closeIcon from './icons/close-icon.svg'
 

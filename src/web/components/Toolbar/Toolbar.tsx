@@ -60,7 +60,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
       className="w-full flex items-center justify-between px-4 h-8 border-b border-white/[0.03]"
       style={{ background: 'rgba(255,255,255,0.015)' }}
     >
-      {/* Left — GitHub links, icon only */}
       <div className="no-drag flex items-center gap-1.5">
         <a
           href="https://github.com/pedroborgesdev/ClicoClicker.git"
@@ -94,12 +93,10 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
         </a>
       </div>
 
-      {/* Right — Theme label + selector */}
       <div className="no-drag flex items-center gap-2">
         <FontAwesomeIcon icon={faPalette} className="text-[10px] text-white/25" />
 
         <div className="relative" ref={ref}>
-          {/* Trigger */}
           <button
             onClick={() => setOpen(prev => !prev)}
             className="flex items-center gap-2 pl-2.5 pr-2 py-1 rounded-lg text-[11px] font-semibold tracking-wide border transition-all duration-200 cursor-pointer"
@@ -122,7 +119,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ currentTheme, onChangeTheme }) => {
             </svg>
           </button>
 
-          {/* Dropdown */}
           {open && (
             <div
               className="absolute right-0 mt-1.5 w-40 rounded-xl py-1 z-50 overflow-hidden"

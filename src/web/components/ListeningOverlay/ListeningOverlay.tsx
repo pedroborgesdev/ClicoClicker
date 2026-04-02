@@ -1,4 +1,3 @@
-// src/components/ListeningOverlay/ListeningOverlay.tsx
 import React from 'react';
 
 interface ListeningOverlayProps {
@@ -11,8 +10,7 @@ const ListeningOverlay: React.FC<ListeningOverlayProps> = ({ isListening }) => {
     }
 
     return (
-        <div className="absolute inset-0 flex flex-col justify-center items-center z-50" style={{ background: 'rgba(6,6,12,0.92)', backdropFilter: 'blur(12px)' }}>
-            {/* Pulsing ring */}
+        <div className="absolute inset-0 flex flex-col justify-center items-center z-50" style={{ background: 'color-mix(in srgb, var(--bg-gradient) 25%, transparent)', backdropFilter: 'blur(12px) brightness(0.4)' }}>
             <div className="relative mb-4">
                 <div className="w-16 h-16 rounded-full animate-ping absolute inset-0" style={{ borderWidth: 2, borderStyle: 'solid', borderColor: `rgba(var(--accent), 0.3)` }} />
                 <div className="w-16 h-16 rounded-full flex items-center justify-center" style={{ borderWidth: 2, borderStyle: 'solid', borderColor: `rgba(var(--accent), 0.5)` }}>

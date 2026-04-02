@@ -35,15 +35,13 @@ const Layout: React.FC<LayoutProps> = ({
       <Toolbar currentTheme={theme} onChangeTheme={onThemeChange} />
 
       <div className="relative flex flex-col isolate overflow-hidden rounded-b-2xl flex-1">
-        {/* Subtle ambient glow */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[300px] rounded-full opacity-[0.04] pointer-events-none" style={{ background: `radial-gradient(circle, var(--accent-hex) 0%, transparent 70%)` }} />
 
         {showIntro && <IntroOverlay isExiting={isExiting} />}
 
         <ListeningOverlay isListening={isListening} />
 
-        <main className="flex-1 pt-3 px-4 w-full max-w-4xl mx-auto text-gray-200 flex flex-col items-center gap-3 overflow-y-auto">
-          {/* Mode Selector */}
+        <main className="flex-1 min-h-0 pt-3 pb-3 px-4 w-full max-w-4xl mx-auto text-gray-200 flex flex-col items-center gap-3">
           <div className="flex w-full rounded-xl p-0.5 border border-white/[0.05]" style={{ background: 'rgba(255,255,255,0.02)' }}>
             <button
               onClick={() => !isClicking && onModeChange('auto')}
@@ -78,7 +76,7 @@ const Layout: React.FC<LayoutProps> = ({
           {children}
         </main>
 
-        <footer className="w-full z-10">
+        <footer className="w-full z-[60]">
           <AppInfo />
         </footer>
       </div>

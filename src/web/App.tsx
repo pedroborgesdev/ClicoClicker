@@ -7,7 +7,6 @@ import AutoClickerPage from './pages/AutoClickerPage.tsx';
 import BurstClickerPage from './pages/BurstClickerPage.tsx';
 
 function App() {
-  // --- Load persisted settings ---
   const loadSettings = (): Partial<ClickerSettings> => {
     try {
       const saved = localStorage.getItem('clickerSettings');
@@ -31,29 +30,25 @@ function App() {
   const initialSettings = loadSettings();
   const initialBurstSettings = loadBurstSettings();
 
-  // --- Mode ---
   const [mode, setMode] = useState<ClickerMode>(() => {
     const saved = localStorage.getItem('clickerMode');
     return (saved === 'auto' || saved === 'burst') ? saved : 'auto';
   });
 
-  // --- Auto Clicker state ---
   const [cps, setCps] = useState<number>(initialSettings.cps ?? 17);
   const [variation, setVariation] = useState<number>(initialSettings.variation ?? 3);
   const [hotkey, setHotkey] = useState<string>(initialSettings.hotkey ?? 'f2');
   const [desiredKey, setDesiredKey] = useState<DesiredKey>(initialSettings.button ?? 'left');
   const [activeOnlyWhenPressed, setActiveOnlyWhenPressed] = useState<boolean>(initialSettings.holdToClick ?? false);
 
-  // --- Burst Clicker state ---
   const [burstClicks, setBurstClicks] = useState<number>(initialBurstSettings.clicks ?? 5);
   const [burstDelay, setBurstDelay] = useState<number>(initialBurstSettings.delay ?? 10);
   const [burstDesiredKey, setBurstDesiredKey] = useState<DesiredKey>(initialBurstSettings.button ?? 'left');
 
-  // --- Shared state ---
   const [isListening, setIsListening] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
+  const [canStop, setCanStop] = useState(false);
 
-  // --- Theme ---
   const [theme, setTheme] = useState<ThemeName>(() => {
     const saved = localStorage.getItem('clickerTheme');
     return (saved && THEMES.includes(saved as ThemeName)) ? saved as ThemeName : 'ocean';
@@ -64,7 +59,6 @@ function App() {
     localStorage.setItem('clickerTheme', theme);
   }, [theme]);
 
-  // --- Intro ---
   const [showIntro, setShowIntro] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
 
@@ -74,12 +68,10 @@ function App() {
     return () => { clearTimeout(exitTimer); clearTimeout(unmountTimer); };
   }, []);
 
-  // --- Persist mode ---
   useEffect(() => {
     localStorage.setItem('clickerMode', mode);
   }, [mode]);
 
-  // --- Persist auto clicker settings ---
   useEffect(() => {
     const settings: ClickerSettings = {
       cps, variation, hotkey, button: desiredKey, holdToClick: activeOnlyWhenPressed,
@@ -88,7 +80,6 @@ function App() {
     catch (error) { console.error("Failed to save settings to localStorage", error); }
   }, [cps, variation, hotkey, desiredKey, activeOnlyWhenPressed]);
 
-  // --- Persist burst clicker settings ---
   useEffect(() => {
     const settings: BurstClickerSettings = {
       clicks: burstClicks, delay: burstDelay, button: burstDesiredKey,
@@ -97,7 +88,6 @@ function App() {
     catch (error) { console.error("Failed to save burst settings to localStorage", error); }
   }, [burstClicks, burstDelay, burstDesiredKey]);
 
-  // --- Auto Clicker handlers ---
   const handleStartAutoClicker = async () => {
     const settings: ClickerSettings = {
       cps, variation, hotkey, button: desiredKey, holdToClick: activeOnlyWhenPressed,
@@ -105,13 +95,13 @@ function App() {
     try {
       await window.electron.startClicker(settings);
       setIsClicking(true);
+      setTimeout(() => setCanStop(true), 500);
     } catch (error) {
       console.error("Erro ao iniciar o auto-clicker:", error);
       setIsClicking(false);
     }
   };
 
-  // --- Burst Clicker handlers ---
   const handleStartBurstClicker = async () => {
     const settings: BurstClickerSettings = {
       clicks: burstClicks, delay: burstDelay, button: burstDesiredKey,
@@ -119,17 +109,18 @@ function App() {
     try {
       await window.electron.startBurstClicker(settings);
       setIsClicking(true);
+      setTimeout(() => setCanStop(true), 500);
     } catch (error) {
       console.error("Erro ao iniciar o burst-clicker:", error);
       setIsClicking(false);
     }
   };
 
-  // --- Stop handler (works for both) ---
   const handleStopClicker = async () => {
     try {
       await window.electron.stopClicker();
       setIsClicking(false);
+      setCanStop(false);
     } catch (error) {
       console.error("Erro ao parar o clicker:", error);
     }
@@ -163,6 +154,7 @@ function App() {
           onIsListeningChange={setIsListening}
           onStart={handleStartAutoClicker}
           onStop={handleStopClicker}
+          canStop={canStop}
         />
       ) : (
         <BurstClickerPage
@@ -175,6 +167,7 @@ function App() {
           onDesiredKeyChange={setBurstDesiredKey}
           onStart={handleStartBurstClicker}
           onStop={handleStopClicker}
+          canStop={canStop}
         />
       )}
     </Layout>

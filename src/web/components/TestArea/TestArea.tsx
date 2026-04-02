@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
-
 const WINDOW_MS = 1000;
 const SMOOTHING = 0.12;
 
@@ -66,7 +63,7 @@ const TestArea: React.FC = () => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full flex-1 min-h-0">
       <div
         role="button"
         tabIndex={0}
@@ -78,7 +75,7 @@ const TestArea: React.FC = () => {
             pushClick(performance.now());
           }
         }}
-        className="rounded-2xl p-3 flex flex-col justify-between items-center h-32 cursor-pointer select-none border border-white/[0.05] transition-all duration-200 hover:border-white/[0.08] active:scale-[0.995]"
+        className="rounded-2xl p-3 flex flex-col justify-between items-center h-full cursor-pointer select-none border border-white/[0.05] transition-all duration-200 hover:border-white/[0.08] active:scale-[0.995]"
         style={{ background: 'linear-gradient(180deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.01) 100%)', userSelect: "none" }}
       >
         <p className="text-white/25 text-xs font-medium tracking-wider uppercase">Click test area</p>
@@ -99,13 +96,6 @@ const TestArea: React.FC = () => {
             Reset
           </button>
         </div>
-      </div>
-      
-      <div className="flex flex-row justify-center items-center gap-2 mt-1.5 mb-0.5">
-        <FontAwesomeIcon icon={faExclamationTriangle} className="w-2.5 text-white/15"/>
-        <p className="text-[10px] text-white/15 font-medium">
-          In 'hold-to-click' mode, side mouse buttons may not work in this test area.
-        </p>
       </div>
     </div>
   );

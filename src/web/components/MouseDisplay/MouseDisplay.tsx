@@ -33,19 +33,17 @@ const MouseDisplay: React.FC<MouseDisplayProps> = ({ desiredKey }) => {
   }, [desiredKey]); 
 
   return (
-    <div className="flex-shrink-0 flex justify-center items-center relative w-[150px] h-[250px] pt-[24px]">
-      {/* Subtle glow behind mouse */}
+    <div className="flex-shrink-0 flex justify-center items-center relative w-[170px] h-full pt-[12px]">
       <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
         <div className="w-32 h-48 rounded-full opacity-[0.06] blur-3xl" style={{ background: desiredKey === 'left' ? 'var(--accent-hex)' : 'var(--accent-secondary-hex)' }} />
       </div>
-      {/* Preload both images so switching is instant */}
       <img src={mouseLeftImage} alt="" className="hidden" />
       <img src={mouseRightImage} alt="" className="hidden" />
       <img
         src={currentImage}
         alt={`Mouse ${desiredKey}`}
         className={`drop-shadow-[0_8px_24px_rgba(0,0,0,0.6)] transition-all duration-300 ${
-          fadeState === "fade-in" ? "opacity-100 scale-100" : "opacity-0 scale-95"
+          fadeState === "fade-in" ? "opacity-100" : "opacity-0"
         }`}
       />
     </div>

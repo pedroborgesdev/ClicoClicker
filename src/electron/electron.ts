@@ -23,7 +23,7 @@ const pyPath = process.platform === 'win32'
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
         width: 480,
-        height: 590,
+        height: 620,
         center: true,
         autoHideMenuBar: true,
         resizable: false,

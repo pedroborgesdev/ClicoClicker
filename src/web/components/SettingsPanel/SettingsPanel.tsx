@@ -2,7 +2,7 @@ import React from 'react';
 import { DesiredKey } from "../../types";
 import SliderInput from "../SliderInput/SliderInput";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faStop, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 
 interface SettingsPanelProps {
     cps: number;
@@ -20,6 +20,7 @@ interface SettingsPanelProps {
     onIsListeningChange: (isListening: boolean) => void;
     onStart: () => void;
     onStop: () => void;
+    canStop: boolean;
 }
 
 const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
@@ -34,6 +35,7 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
         activeOnlyWhenPressed,
         onStart,
         onStop,
+        canStop,
     } = props;
     
     const handleHotkeyButtonClick = async () => {
@@ -90,6 +92,13 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
                     </div>
                     <span className="font-medium text-xs text-white/70 select-none">Hold to click</span>
                 </div>
+
+                <div className="flex flex-row items-center gap-1.5">
+                    <FontAwesomeIcon icon={faExclamationTriangle} className="w-2.5 text-white/15"/>
+                    <p className="text-[10px] text-white/15 font-medium">
+                        In 'hold-to-click' mode, side mouse buttons may not work in the test area.
+                    </p>
+                </div>
             </fieldset>
 
             <div className="mt-auto pt-1 flex gap-2">
@@ -106,11 +115,11 @@ const SettingsPanel: React.FC<SettingsPanelProps> = (props) => {
                 </button>
                 <button
                     onClick={onStop}
-                    disabled={!isClicking}
+                    disabled={!canStop}
                     className={`w-full flex items-center justify-center gap-2 text-white font-bold py-2 px-3 rounded-xl transition-all duration-200 text-xs disabled:cursor-not-allowed ${
-                        isClicking ? 'shadow-[0_0_16px_rgba(239,68,68,0.2)] hover:shadow-[0_0_24px_rgba(239,68,68,0.3)] hover:brightness-110' : 'opacity-30'
+                        canStop ? 'shadow-[0_0_16px_rgba(239,68,68,0.2)] hover:shadow-[0_0_24px_rgba(239,68,68,0.3)] hover:brightness-110' : 'opacity-30'
                     }`}
-                    style={{ background: isClicking ? 'linear-gradient(135deg, #DC4A4A 0%, #C43535 100%)' : 'rgba(255,255,255,0.05)' }}
+                    style={{ background: canStop ? 'linear-gradient(135deg, #DC4A4A 0%, #C43535 100%)' : 'rgba(255,255,255,0.05)' }}
                 >
                     <FontAwesomeIcon icon={faStop} className="text-xs" />
                     <span>Stop</span>

@@ -20,6 +20,7 @@ interface AutoClickerPageProps {
   onIsListeningChange: (isListening: boolean) => void;
   onStart: () => void;
   onStop: () => void;
+  canStop: boolean;
 }
 
 const AutoClickerPage: React.FC<AutoClickerPageProps> = (props) => {
@@ -43,6 +44,7 @@ const AutoClickerPage: React.FC<AutoClickerPageProps> = (props) => {
           onIsListeningChange={props.onIsListeningChange}
           onStart={props.onStart}
           onStop={props.onStop}
+          canStop={props.canStop}
         />
       </div>
       <TestArea />

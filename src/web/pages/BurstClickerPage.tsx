@@ -16,6 +16,7 @@ interface BurstClickerPageProps {
   onDesiredKeyChange: (key: DesiredKey) => void;
   onStart: () => void;
   onStop: () => void;
+  canStop: boolean;
 }
 
 const BurstClickerPage: React.FC<BurstClickerPageProps> = ({
@@ -28,6 +29,7 @@ const BurstClickerPage: React.FC<BurstClickerPageProps> = ({
   onDesiredKeyChange,
   onStart,
   onStop,
+  canStop,
 }) => {
   return (
     <>
@@ -66,11 +68,11 @@ const BurstClickerPage: React.FC<BurstClickerPageProps> = ({
             </button>
             <button
               onClick={onStop}
-              disabled={!isClicking}
+              disabled={!canStop}
               className={`w-full flex items-center justify-center gap-2 text-white font-bold py-2 px-3 rounded-xl transition-all duration-200 text-xs disabled:cursor-not-allowed ${
-                isClicking ? 'shadow-[0_0_16px_rgba(239,68,68,0.2)] hover:shadow-[0_0_24px_rgba(239,68,68,0.3)] hover:brightness-110' : 'opacity-30'
+                canStop ? 'shadow-[0_0_16px_rgba(239,68,68,0.2)] hover:shadow-[0_0_24px_rgba(239,68,68,0.3)] hover:brightness-110' : 'opacity-30'
               }`}
-              style={{ background: isClicking ? 'linear-gradient(135deg, #DC4A4A 0%, #C43535 100%)' : 'rgba(255,255,255,0.05)' }}
+              style={{ background: canStop ? 'linear-gradient(135deg, #DC4A4A 0%, #C43535 100%)' : 'rgba(255,255,255,0.05)' }}
             >
               <FontAwesomeIcon icon={faStop} className="text-xs" />
               <span>Stop</span>
