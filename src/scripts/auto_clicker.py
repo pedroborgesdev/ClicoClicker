@@ -44,6 +44,10 @@ def auto_clicker(target_button, base_cps, variation, debug=False):
                 block_duration = random.uniform(MIN_BLOCK_DURATION, MAX_BLOCK_DURATION)
                 next_cps_change_time = now + block_duration
 
+                injecting = True
+                mouse_controller.click(target_button)
+                injecting = False
+
                 delay = 1.0 / current_cps
                 next_click_time = now + delay
 

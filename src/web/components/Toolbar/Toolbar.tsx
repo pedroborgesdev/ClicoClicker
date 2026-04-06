@@ -4,7 +4,7 @@ import { faPalette } from '@fortawesome/free-solid-svg-icons';
 
 export const THEMES = [
   'ocean', 'crimson', 'emerald', 'violet', 'amber',
-  'sky', 'lime', 'rose', 'slate', 'teal', 'indigo', 'gold'
+  'sky', 'lime', 'rose', 'slate', 'teal', 'indigo', 'gold', 'carbon'
 ] as const;
 export type ThemeName = typeof THEMES[number];
 
@@ -21,6 +21,7 @@ const THEME_COLORS: Record<ThemeName, string> = {
   teal:    '#14B8A6',
   indigo:  '#6366F1',
   gold:    '#FFD700',
+  carbon:  '#A0A0A0',
 };
 
 const THEME_LABELS: Record<ThemeName, string> = {
@@ -36,6 +37,7 @@ const THEME_LABELS: Record<ThemeName, string> = {
   teal:    'Teal',
   indigo:  'Indigo',
   gold:    'Gold',
+  carbon:  'Carbon',
 };
 
 interface ToolbarProps {

@@ -6,9 +6,9 @@ export interface IElectronAPI {
     maximizeApp: () => void;
     closeApp: () => void;
     listenForHotkey: () => Promise<string>;
-    startClicker: (settings: ClickerSettings) => Promise<void>;
-    startBurstClicker: (settings: BurstClickerSettings) => Promise<void>;
-    stopClicker: () => Promise<boolean>;
+    startClicker: (sessionId: number, settings: ClickerSettings) => Promise<void>;
+    startBurstClicker: (sessionId: number, settings: BurstClickerSettings) => Promise<void>;
+    stopClicker: (sessionId: number) => Promise<boolean>;
 }
 
 declare global {

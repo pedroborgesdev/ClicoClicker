@@ -14,10 +14,9 @@ const IntroOverlay: React.FC<IntroOverlayProps> = ({ isExiting }) => {
   return (
     <div
       className={`
-        fixed inset-0 z-[5] 
+        absolute inset-0 z-[5] 
         flex flex-col items-center justify-center 
         transition-[clip-path] duration-[3s] ease-in-out
-        mt-8 mb-8
       `}
       style={{
         background: 'var(--bg-3)',

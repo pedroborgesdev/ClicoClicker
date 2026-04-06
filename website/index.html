@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClicoClicker - Advanced Auto Clicker</title>
+    <link rel="icon" type="image/x-icon" href="/../assets/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent: #5B8DEF;
+            --accent-dim: rgba(91, 141, 239, 0.12);
+            --accent-glow: rgba(91, 141, 239, 0.25);
+        }
+        body { background: #050507; }
+        .glass {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(255,255,255,0.05);
+            backdrop-filter: blur(16px);
+        }
+        .glass-nav {
+            background: rgba(5,5,7,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .glow-btn {
+            background: linear-gradient(135deg, #3B82F6, #1D4ED8);
+            box-shadow: 0 0 20px rgba(59,130,246,0.25);
+            transition: all 0.3s ease;
+        }
+        .glow-btn:hover {
+            box-shadow: 0 0 32px rgba(59,130,246,0.4);
+            transform: translateY(-2px);
+        }
+        .outline-btn {
+            border: 1px solid rgba(255,255,255,0.12);
+            transition: all 0.3s ease;
+        }
+        .outline-btn:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.25);
+        }
+        .section-alt { background: rgba(255,255,255,0.01); }
+        .accent-text { color: var(--accent); }
+        .accent-icon { color: var(--accent); opacity: 0.7; }
+        .fade-in { opacity: 0; transform: translateY(24px); transition: all 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .theme-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.1); transition: all 0.2s; }
+        .theme-dot:hover { transform: scale(1.3); border-color: rgba(255,255,255,0.4); }
+        .session-pill {
+            width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.03);
+        }
+        .session-pill.active {
+            background: var(--accent-dim); color: var(--accent); border-color: var(--accent-glow);
+            box-shadow: 0 0 12px var(--accent-dim);
+        }
+        .session-pill.running::after {
+            content: ''; position: absolute; top: -3px; right: -3px;
+            width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+        @keyframes burstPop { 0%,100% { transform: scale(1); } 40% { transform: scale(1.6); } 60% { transform: scale(1); } }
+        .step-num {
+            width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 14px; flex-shrink: 0;
+            background: var(--accent-dim); color: var(--accent);
+        }
+        html { scroll-behavior: smooth; }
+        .menu-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5,5,7,0.97); z-index: 60; }
+        .menu-mobile.active { display: flex; }
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 600; border: 1px solid rgba(91,141,239,0.2);
+            background: rgba(91,141,239,0.08); color: var(--accent);
+        }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full glass-nav z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="../assets/icon.png" alt="ClicoClicker" class="h-7 w-7">
+                <a href="#top" class="text-lg font-bold text-white tracking-tight">ClicoClicker</a>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm">
+                <a href="#features" class="text-gray-400 hover:text-white transition-colors">Features</a>
+                <a href="#themes" class="text-gray-400 hover:text-white transition-colors">Themes</a>
+                <a href="#download" class="text-gray-400 hover:text-white transition-colors">Download</a>
+                <a href="issues.html" class="text-gray-400 hover:text-white transition-colors">Issues</a>
+                <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-github text-base"></i>
+                </a>
+            </div>
+            <button class="md:hidden text-white" id="menuButton"><i class="fas fa-bars text-lg"></i></button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="menu-mobile flex-col justify-center items-center gap-8" id="mobileMenu">
+        <button class="absolute top-6 right-6 text-white" id="closeButton"><i class="fas fa-times text-xl"></i></button>
+        <a href="#features" class="text-lg text-white hover:text-gray-300 transition-colors">Features</a>
+        <a href="#themes" class="text-lg text-white hover:text-gray-300 transition-colors">Themes</a>
+        <a href="#download" class="text-lg text-white hover:text-gray-300 transition-colors">Download</a>
+        <a href="issues.html" class="text-lg text-white hover:text-gray-300 transition-colors">Issues</a>
+        <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="text-lg text-white hover:text-gray-300 transition-colors">GitHub</a>
+    </div>
+
+    <!-- Hero -->
+    <section id="top" class="pt-36 pb-24 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, var(--accent) 0%, transparent 70%);"></div>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="mb-8 flex justify-center">
+                <span class="badge"><i class="fas fa-sparkles"></i> Now with Multi-Session Support</span>
+            </div>
+            <img src="../assets/banner.png" alt="ClicoClicker Banner" class="mx-auto mb-12 w-full max-w-4xl object-contain fade-in">
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-6 text-white leading-tight fade-in">
+                Click Automation,<br><span class="accent-text">Reimagined</span>
+            </h1>
+            <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed fade-in">
+                A powerful auto clicker with multiple concurrent sessions, 13 themes, and human-like click patterns. Built for gaming, testing, and automation.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in">
+                <a href="#download" class="glow-btn text-white px-8 py-3.5 rounded-xl font-semibold text-sm">
+                    <i class="fas fa-download mr-2"></i>Download Now
+                </a>
+                <a href="#features" class="outline-btn text-white px-8 py-3.5 rounded-xl font-semibold text-sm">
+                    Explore Features
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Preview -->
+    <section class="py-20 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <div class="lg:w-1/2 fade-in">
+                    <img src="../assets/application.png" alt="ClicoClicker Interface" class="rounded-2xl shadow-2xl mx-auto block" style="box-shadow: 0 25px 60px rgba(0,0,0,0.5); max-width: 480px;">
+                </div>
+                <div class="lg:w-1/2 fade-in">
+                    <h2 class="text-3xl font-bold mb-3 text-white">Two Modes. Full Control.</h2>
+                    <p class="text-gray-400 mb-8">Switch between Auto Clicker and Burst Clicker modes, each with independent settings per session.</p>
+                    <div class="space-y-4">
+                        <div class="card p-5">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="fas fa-mouse-pointer accent-icon text-sm"></i>
+                                <h3 class="font-semibold text-white text-sm">Auto Clicker</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Continuous clicking with adjustable CPS, Gaussian variation, and hotkey toggle/hold modes.</p>
+                        </div>
+                        <div class="card p-5">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="fas fa-bolt accent-icon text-sm"></i>
+                                <h3 class="font-semibold text-white text-sm">Burst Clicker</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Multiplies each real click into configurable extra clicks with precise delay control.</p>
+                        </div>
+                        <div class="card p-5">
+                            <div class="flex items-center gap-3 mb-2">
+                                <i class="fas fa-keyboard accent-icon text-sm"></i>
+                                <h3 class="font-semibold text-white text-sm">Custom Hotkeys</h3>
+                            </div>
+                            <p class="text-gray-400 text-sm">Assign any keyboard or mouse button as your activation trigger.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Multi-Session Feature -->
+    <section id="sessions" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <span class="badge mb-4"><i class="fas fa-layer-group"></i> New Feature</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mt-4">Multiple Concurrent Sessions</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Run up to 5 independent clicker sessions simultaneously. Each session has its own mode, CPS, hotkey, and settings — all running in parallel.</p>
+            </div>
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <!-- Session sidebar mockup -->
+                <div class="lg:w-1/3 flex justify-center fade-in">
+                    <div class="card p-6 w-64">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Session Sidebar</p>
+                        <div class="flex flex-col items-center gap-3">
+                            <div class="session-pill active" style="position:relative;">1<span style="position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.5s infinite;"></span></div>
+                            <div class="session-pill active" style="position:relative;">2<span style="position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 1.5s infinite;"></span></div>
+                            <div class="session-pill">3</div>
+                            <div class="session-pill" style="border-style:dashed; color: rgba(255,255,255,0.2);">+</div>
+                        </div>
+                        <div class="mt-5 pt-4 border-t border-white border-opacity-5">
+                            <p class="text-xs text-gray-500 text-center">Right-click to delete</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Feature details -->
+                <div class="lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4 fade-in">
+                    <div class="card p-5">
+                        <i class="fas fa-play-circle accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Independent Execution</h3>
+                        <p class="text-gray-400 text-xs">Each session spawns its own process. Start and stop sessions independently.</p>
+                    </div>
+                    <div class="card p-5">
+                        <i class="fas fa-sliders-h accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Per-Session Settings</h3>
+                        <p class="text-gray-400 text-xs">Each session stores its own CPS, variation, hotkey, mode, and mouse button.</p>
+                    </div>
+                    <div class="card p-5">
+                        <i class="fas fa-save accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Persistent Config</h3>
+                        <p class="text-gray-400 text-xs">All session configurations are saved and restored between app restarts.</p>
+                    </div>
+                    <div class="card p-5">
+                        <i class="fas fa-th-large accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Up to 5 Sessions</h3>
+                        <p class="text-gray-400 text-xs">Create, switch, and manage up to 5 concurrent clicker sessions from the sidebar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Burst Clicker Feature -->
+    <section class="py-20 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <span class="badge mb-4"><i class="fas fa-bolt"></i> New Feature</span>
+                <h2 class="text-3xl md:text-4xl font-bold text-white mt-4">Burst Clicker Mode</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Multiply every real click into a burst of extra clicks. Perfect for rapid actions that require multiple clicks per input.</p>
+            </div>
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <!-- Burst mockup -->
+                <div class="lg:w-1/3 flex justify-center fade-in">
+                    <div class="card p-6 w-72">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-5">Burst Preview</p>
+                        <!-- Visual burst animation -->
+                        <div class="flex items-center justify-center gap-3 mb-5">
+                            <div style="width:44px;height:44px;border-radius:12px;background:var(--accent-dim);border:1px solid rgba(91,141,239,0.15);display:flex;align-items:center;justify-content:center;">
+                                <i class="fas fa-hand-pointer accent-text text-base"></i>
+                            </div>
+                            <div class="flex flex-col items-center gap-0.5">
+                                <i class="fas fa-chevron-right text-xs" style="color:rgba(255,255,255,0.15);"></i>
+                                <i class="fas fa-chevron-right text-xs" style="color:rgba(255,255,255,0.15);"></i>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <div class="burst-dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);opacity:0.9;animation:burstPop 1.8s ease infinite 0s;"></div>
+                                <div class="burst-dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);opacity:0.7;animation:burstPop 1.8s ease infinite 0.12s;"></div>
+                                <div class="burst-dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);opacity:0.55;animation:burstPop 1.8s ease infinite 0.24s;"></div>
+                                <div class="burst-dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);opacity:0.4;animation:burstPop 1.8s ease infinite 0.36s;"></div>
+                                <div class="burst-dot" style="width:10px;height:10px;border-radius:50%;background:var(--accent);opacity:0.25;animation:burstPop 1.8s ease infinite 0.48s;"></div>
+                            </div>
+                        </div>
+                        <div class="text-center mb-5">
+                            <span class="text-2xl font-extrabold text-white">1</span>
+                            <span class="text-xs text-gray-500 mx-1.5">→</span>
+                            <span class="text-2xl font-extrabold accent-text">6</span>
+                            <span class="text-xs text-gray-500 ml-1">clicks</span>
+                        </div>
+                        <!-- Fake controls -->
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-xs text-gray-500">Extra Clicks</span>
+                                    <span class="text-xs font-bold text-white" style="background:rgba(255,255,255,0.06);padding:1px 8px;border-radius:6px;">5</span>
+                                </div>
+                                <div class="w-full rounded-full h-1" style="background: rgba(255,255,255,0.06);">
+                                    <div class="h-1 rounded-full" style="width: 10%; background: var(--accent); opacity: 0.7;"></div>
+                                </div>
+                                <div class="flex justify-between mt-0.5"><span class="text-xs text-gray-700">1</span><span class="text-xs text-gray-700">50</span></div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-xs text-gray-500">Delay</span>
+                                    <span class="text-xs font-bold text-white" style="background:rgba(255,255,255,0.06);padding:1px 8px;border-radius:6px;">10ms</span>
+                                </div>
+                                <div class="w-full rounded-full h-1" style="background: rgba(255,255,255,0.06);">
+                                    <div class="h-1 rounded-full" style="width: 10%; background: var(--accent); opacity: 0.7;"></div>
+                                </div>
+                                <div class="flex justify-between mt-0.5"><span class="text-xs text-gray-700">0</span><span class="text-xs text-gray-700">100ms</span></div>
+                            </div>
+                            <div class="flex gap-2 mt-1">
+                                <div style="flex:1;text-align:center;padding:4px 0;border-radius:8px;font-size:11px;font-weight:600;background:var(--accent-dim);color:var(--accent);border:1px solid rgba(91,141,239,0.2);">Left</div>
+                                <div style="flex:1;text-align:center;padding:4px 0;border-radius:8px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.06);">Right</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Burst details -->
+                <div class="lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4 fade-in">
+                    <div class="card p-5">
+                        <i class="fas fa-plus-circle accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Click Multiplication</h3>
+                        <p class="text-gray-400 text-xs">Each real click triggers 1–50 extra clicks automatically.</p>
+                    </div>
+                    <div class="card p-5">
+                        <i class="fas fa-clock accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Configurable Delay</h3>
+                        <p class="text-gray-400 text-xs">Set 0–100ms delay between burst clicks for natural timing.</p>
+                    </div>
+                    <div class="card p-5">
+                        <i class="fas fa-mouse-pointer accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Left or Right Button</h3>
+                        <p class="text-gray-400 text-xs">Choose which mouse button to listen and burst on.</p>
+                    </div>
+                    <div class="card p-5">
+                        <i class="fas fa-shield-alt accent-icon mb-3 block"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Smart Injection</h3>
+                        <p class="text-gray-400 text-xs">Artificial clicks are flagged to avoid conflicts with Auto Clicker sessions.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Themes Section -->
+    <section id="themes" class="py-20 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">13 Handcrafted Themes</h2>
+                <p class="text-gray-400 mt-4 max-w-xl mx-auto">Personalize your experience with carefully designed color themes.</p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-4 max-w-2xl mx-auto fade-in">
+                <div class="theme-dot" style="background:#5B8DEF;" title="Ocean"></div>
+                <div class="theme-dot" style="background:#EF4444;" title="Crimson"></div>
+                <div class="theme-dot" style="background:#34D399;" title="Emerald"></div>
+                <div class="theme-dot" style="background:#A855F7;" title="Violet"></div>
+                <div class="theme-dot" style="background:#F59E0B;" title="Amber"></div>
+                <div class="theme-dot" style="background:#38BDF8;" title="Sky"></div>
+                <div class="theme-dot" style="background:#A3E635;" title="Lime"></div>
+                <div class="theme-dot" style="background:#F43F5E;" title="Rose"></div>
+                <div class="theme-dot" style="background:#64748B;" title="Slate"></div>
+                <div class="theme-dot" style="background:#14B8A6;" title="Teal"></div>
+                <div class="theme-dot" style="background:#6366F1;" title="Indigo"></div>
+                <div class="theme-dot" style="background:#FFD700;" title="Gold"></div>
+                <div class="theme-dot" style="background:#A0A0A0;" title="Carbon"></div>
+            </div>
+            <div class="flex flex-wrap justify-center gap-3 mt-6 fade-in">
+                <span class="text-xs text-gray-500">Ocean</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Crimson</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Emerald</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Violet</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Amber</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Sky</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Lime</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Rose</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Slate</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Teal</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Indigo</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Gold</span>
+                <span class="text-xs text-gray-600">·</span>
+                <span class="text-xs text-gray-500">Carbon</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section id="features" class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Key Features</h2>
+                <p class="text-gray-400 mt-4 max-w-xl mx-auto">Everything you need for precise click automation.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 fade-in">
+                <div class="card p-6">
+                    <i class="fas fa-tachometer-alt accent-icon mb-4 block text-lg"></i>
+                    <h3 class="text-base font-semibold text-white mb-2">CPS Control</h3>
+                    <p class="text-gray-400 text-sm">1–100 CPS with Gaussian variation for natural, human-like click patterns.</p>
+                </div>
+                <div class="card p-6">
+                    <i class="fas fa-layer-group accent-icon mb-4 block text-lg"></i>
+                    <h3 class="text-base font-semibold text-white mb-2">Multi-Session</h3>
+                    <p class="text-gray-400 text-sm">Run up to 5 concurrent sessions with independent configs and processes.</p>
+                </div>
+                <div class="card p-6">
+                    <i class="fas fa-bolt accent-icon mb-4 block text-lg"></i>
+                    <h3 class="text-base font-semibold text-white mb-2">Burst Clicker</h3>
+                    <p class="text-gray-400 text-sm">Multiply each real click into up to 50 extra clicks with configurable delay.</p>
+                </div>
+                <div class="card p-6">
+                    <i class="fas fa-hand-pointer accent-icon mb-4 block text-lg"></i>
+                    <h3 class="text-base font-semibold text-white mb-2">Hold-to-Click</h3>
+                    <p class="text-gray-400 text-sm">Toggle mode or hold-to-click — you decide how it activates.</p>
+                </div>
+                <div class="card p-6">
+                    <i class="fas fa-palette accent-icon mb-4 block text-lg"></i>
+                    <h3 class="text-base font-semibold text-white mb-2">13 Themes</h3>
+                    <p class="text-gray-400 text-sm">From Ocean to Carbon — every accent, gradient, and UI element adapts.</p>
+                </div>
+                <div class="card p-6">
+                    <i class="fas fa-desktop accent-icon mb-4 block text-lg"></i>
+                    <h3 class="text-base font-semibold text-white mb-2">Cross-Platform</h3>
+                    <p class="text-gray-400 text-sm">Native installers for Windows (.exe) and Linux (.deb).</p>
+                </div>
+            </div>
+            <div class="flex justify-center mt-5 fade-in">
+                <div class="card p-6 w-full" style="max-width: 340px;">
+                    <i class="fas fa-code accent-icon mb-4 block text-lg"></i>
+                    <h3 class="text-base font-semibold text-white mb-2">Open Source</h3>
+                    <p class="text-gray-400 text-sm">MIT licensed. Built with Electron, React, TypeScript, and Python.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why ClicoClicker -->
+    <section class="py-20 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Why ClicoClicker?</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 fade-in">
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-4 accent-icon"><i class="fas fa-bolt"></i></div>
+                    <h3 class="text-sm font-semibold text-white mb-2">High Performance</h3>
+                    <p class="text-gray-400 text-xs">Optimized Python scripts with minimal overhead.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-4 accent-icon"><i class="fas fa-crosshairs"></i></div>
+                    <h3 class="text-sm font-semibold text-white mb-2">Millisecond Precision</h3>
+                    <p class="text-gray-400 text-xs">Accurate timing for perfect click intervals.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-4 accent-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3 class="text-sm font-semibold text-white mb-2">Secure & Transparent</h3>
+                    <p class="text-gray-400 text-xs">Open source, no telemetry, no hidden code.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-4 accent-icon"><i class="fas fa-gamepad"></i></div>
+                    <h3 class="text-sm font-semibold text-white mb-2">Game Ready</h3>
+                    <p class="text-gray-400 text-xs">Natural Gaussian variation avoids detection patterns.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="py-20">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Built with Modern Tech</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto fade-in">
+                <div class="card p-6 text-center">
+                    <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/electron.svg" alt="Electron" class="w-10 h-10 mx-auto mb-3" style="filter: brightness(0) invert(0.5);">
+                    <p class="text-gray-400 text-sm">Electron</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/react.svg" alt="React" class="w-10 h-10 mx-auto mb-3" style="filter: brightness(0) invert(0.5);">
+                    <p class="text-gray-400 text-sm">React</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/typescript.svg" alt="TypeScript" class="w-10 h-10 mx-auto mb-3" style="filter: brightness(0) invert(0.5);">
+                    <p class="text-gray-400 text-sm">TypeScript</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <img src="https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/python.svg" alt="Python" class="w-10 h-10 mx-auto mb-3" style="filter: brightness(0) invert(0.5);">
+                    <p class="text-gray-400 text-sm">Python</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start -->
+    <section class="py-20 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Quick Start</h2>
+            </div>
+            <div class="max-w-2xl mx-auto space-y-4 fade-in">
+                <div class="card p-5 flex items-start gap-4">
+                    <div class="step-num">1</div>
+                    <div>
+                        <h3 class="font-semibold text-white text-sm mb-1">Download & Install</h3>
+                        <p class="text-gray-400 text-xs">Grab the installer for your platform. Setup is fully automatic.</p>
+                    </div>
+                </div>
+                <div class="card p-5 flex items-start gap-4">
+                    <div class="step-num">2</div>
+                    <div>
+                        <h3 class="font-semibold text-white text-sm mb-1">Create Sessions</h3>
+                        <p class="text-gray-400 text-xs">Use the sidebar to add up to 5 sessions. Configure CPS, mode, and hotkeys for each.</p>
+                    </div>
+                </div>
+                <div class="card p-5 flex items-start gap-4">
+                    <div class="step-num">3</div>
+                    <div>
+                        <h3 class="font-semibold text-white text-sm mb-1">Start Clicking</h3>
+                        <p class="text-gray-400 text-xs">Hit start or press your hotkey. Run multiple sessions concurrently.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download -->
+    <section id="download" class="py-20">
+        <div class="container mx-auto px-6 text-center">
+            <div class="mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Download ClicoClicker</h2>
+                <p class="text-gray-400 mt-4">Free, open source, no account required.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl mx-auto fade-in">
+                <div class="card p-8 text-center">
+                    <i class="fab fa-windows text-3xl accent-icon mb-4 block"></i>
+                    <h3 class="text-lg font-semibold text-white mb-2">Windows</h3>
+                    <p class="text-gray-500 text-xs mb-5">Windows 10 or later</p>
+                    <a href="https://github.com/pedroborgesdev/ClicoClicker/releases/download/v1.0.0/ClicoClicker-Setup-1.0.0-x64.exe"
+                       class="glow-btn block text-white font-semibold py-3 px-6 rounded-xl text-sm">
+                        Download .exe
+                    </a>
+                    <p class="text-gray-600 text-xs mt-3">v1.0.0 · 64-bit</p>
+                </div>
+                <div class="card p-8 text-center">
+                    <i class="fab fa-linux text-3xl accent-icon mb-4 block"></i>
+                    <h3 class="text-lg font-semibold text-white mb-2">Linux</h3>
+                    <p class="text-gray-500 text-xs mb-5">Debian-based distributions</p>
+                    <a href="https://github.com/pedroborgesdev/ClicoClicker/releases/download/v1.0.0/ClicoClicker-1.0.0-amd64.deb"
+                       class="glow-btn block text-white font-semibold py-3 px-6 rounded-xl text-sm">
+                        Download .deb
+                    </a>
+                    <p class="text-gray-600 text-xs mt-3">v1.0.0 · amd64</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VirusTotal -->
+    <section class="py-20 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">Verified Safe</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">ClicoClicker is open source and scanned by 63 security vendors on VirusTotal. Zero detections.</p>
+            </div>
+            <div class="max-w-3xl mx-auto fade-in">
+                <img src="../assets/virus-total.png" alt="VirusTotal scan results — 0/63 detections" class="rounded-2xl w-full" style="border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 50px rgba(0,0,0,0.4);">
+                <p class="text-center mt-4 text-gray-500 text-xs">0/63 security vendors flagged this file as malicious</p>
+            </div>
+            <div class="text-center mt-8 fade-in">
+                <a href="issues.html" class="outline-btn inline-flex items-center gap-2 text-white px-6 py-3 rounded-xl font-semibold text-sm">
+                    <i class="fas fa-exclamation-triangle text-yellow-500"></i>
+                    Having installation issues?
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="py-20 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-bold text-white">FAQ</h2>
+            </div>
+            <div class="max-w-2xl mx-auto space-y-4 fade-in">
+                <div class="card p-5">
+                    <h3 class="font-semibold text-white text-sm mb-1">Is ClicoClicker free?</h3>
+                    <p class="text-gray-400 text-xs">Yes, completely free and open source under the MIT license.</p>
+                </div>
+                <div class="card p-5">
+                    <h3 class="font-semibold text-white text-sm mb-1">How many sessions can I run?</h3>
+                    <p class="text-gray-400 text-xs">Up to 5 concurrent sessions, each with independent settings and processes.</p>
+                </div>
+                <div class="card p-5">
+                    <h3 class="font-semibold text-white text-sm mb-1">How do I install on Linux?</h3>
+                    <p class="text-gray-400 text-xs">Download the .deb and run:</p>
+                    <code class="block p-2 rounded mt-2 text-gray-400 text-xs" style="background: rgba(255,255,255,0.03);">sudo dpkg -i ClicoClicker-1.0.0-amd64.deb</code>
+                </div>
+                <div class="card p-5">
+                    <h3 class="font-semibold text-white text-sm mb-1">Can I contribute?</h3>
+                    <p class="text-gray-400 text-xs">Absolutely! Check the <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="accent-text hover:underline">GitHub repository</a> to submit issues or pull requests.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10" style="border-top: 1px solid rgba(255,255,255,0.04);">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="../assets/icon.png" alt="ClicoClicker" class="h-6 w-6 opacity-60">
+                    <p class="text-gray-500 text-sm">Created by Pedro Borges</p>
+                </div>
+                <div class="flex items-center gap-6 text-sm">
+                    <a href="#features" class="text-gray-500 hover:text-white transition-colors">Features</a>
+                    <a href="#download" class="text-gray-500 hover:text-white transition-colors">Download</a>
+                    <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="text-gray-500 hover:text-white transition-colors">GitHub</a>
+                </div>
+                <p class="text-gray-600 text-xs">MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('mobileMenu').classList.remove('active');
+                }
+            });
+        });
+
+        // Mobile menu
+        document.getElementById('menuButton').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.add('active');
+        });
+        document.getElementById('closeButton').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.remove('active');
+        });
+
+        // Scroll fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

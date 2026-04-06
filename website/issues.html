@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClicoClicker - Installation Help</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --accent: #5B8DEF;
+            --accent-dim: rgba(91, 141, 239, 0.12);
+            --accent-glow: rgba(91, 141, 239, 0.25);
+        }
+        body { background: #050507; }
+        .glass-nav {
+            background: rgba(5,5,7,0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        .card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: rgba(255,255,255,0.1);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .outline-btn {
+            border: 1px solid rgba(255,255,255,0.12);
+            transition: all 0.3s ease;
+        }
+        .outline-btn:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.25);
+        }
+        .section-alt { background: rgba(255,255,255,0.01); }
+        .accent-text { color: var(--accent); }
+        .accent-icon { color: var(--accent); opacity: 0.7; }
+        .fade-in { opacity: 0; transform: translateY(24px); transition: all 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        html { scroll-behavior: smooth; }
+        .step-num {
+            width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 14px; flex-shrink: 0;
+            background: var(--accent-dim); color: var(--accent);
+        }
+        .badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px;
+            font-size: 12px; font-weight: 600; border: 1px solid rgba(91,141,239,0.2);
+            background: rgba(91,141,239,0.08); color: var(--accent);
+        }
+        .warning-card {
+            background: linear-gradient(180deg, rgba(245,158,11,0.06) 0%, rgba(245,158,11,0.02) 100%);
+            border: 1px solid rgba(245,158,11,0.15);
+            border-radius: 16px;
+        }
+        .menu-mobile { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5,5,7,0.97); z-index: 60; }
+        .menu-mobile.active { display: flex; }
+    </style>
+</head>
+<body class="text-gray-300 antialiased">
+    <!-- Navigation -->
+    <nav class="fixed w-full glass-nav z-50">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="../assets/icon.png" alt="ClicoClicker" class="h-7 w-7">
+                <a href="index.html" class="text-lg font-bold text-white tracking-tight">ClicoClicker</a>
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm">
+                <a href="index.html" class="text-gray-400 hover:text-white transition-colors">Home</a>
+                <a href="index.html#features" class="text-gray-400 hover:text-white transition-colors">Features</a>
+                <a href="index.html#download" class="text-gray-400 hover:text-white transition-colors">Download</a>
+                <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="text-gray-400 hover:text-white transition-colors">
+                    <i class="fab fa-github text-base"></i>
+                </a>
+            </div>
+            <button class="md:hidden text-white" id="menuButton"><i class="fas fa-bars text-lg"></i></button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="menu-mobile flex-col justify-center items-center gap-8" id="mobileMenu">
+        <button class="absolute top-6 right-6 text-white" id="closeButton"><i class="fas fa-times text-xl"></i></button>
+        <a href="index.html" class="text-lg text-white hover:text-gray-300 transition-colors">Home</a>
+        <a href="index.html#features" class="text-lg text-white hover:text-gray-300 transition-colors">Features</a>
+        <a href="index.html#download" class="text-lg text-white hover:text-gray-300 transition-colors">Download</a>
+        <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="text-lg text-white hover:text-gray-300 transition-colors">GitHub</a>
+    </div>
+
+    <!-- Hero -->
+    <section class="pt-36 pb-16 relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full opacity-10" style="background: radial-gradient(circle, #F59E0B 0%, transparent 70%);"></div>
+        </div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+            <div class="mb-6 flex justify-center">
+                <span class="badge" style="border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.08); color: #F59E0B;">
+                    <i class="fas fa-exclamation-triangle"></i> Installation Help
+                </span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-6 text-white leading-tight fade-in">
+                Having trouble<br><span style="color: #F59E0B;">installing?</span>
+            </h1>
+            <p class="text-lg text-gray-400 mb-6 max-w-2xl mx-auto leading-relaxed fade-in">
+                Windows may block ClicoClicker during installation because the app is not code-signed. This is normal for open-source apps — here's how to fix it.
+            </p>
+            <a href="#smart-app-control" class="outline-btn inline-block text-white px-8 py-3.5 rounded-xl font-semibold text-sm fade-in">
+                See the fix <i class="fas fa-arrow-down ml-2"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Why this happens -->
+    <section class="py-16 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="max-w-3xl mx-auto fade-in">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-6 text-center">Why does this happen?</h2>
+                <div class="warning-card p-6 mb-8">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 mt-1">
+                            <i class="fas fa-info-circle text-yellow-500 text-lg"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-300 text-sm leading-relaxed">
+                                Windows <strong class="text-white">Smart App Control</strong> and <strong class="text-white">SmartScreen</strong> block applications that don't have a code-signing certificate. Code-signing certificates cost hundreds of dollars per year, which is not viable for a free, open-source project.
+                            </p>
+                            <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+                                This does <strong class="text-white">not</strong> mean the app is malicious. ClicoClicker is fully open source — you can inspect every line of code on <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="accent-text hover:underline">GitHub</a>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Smart App Control Fix -->
+    <section id="smart-app-control" class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Disable Smart App Control</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">If Windows completely blocks the installer from running, Smart App Control is likely enabled. Follow these steps to disable it.</p>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-4 mb-10 fade-in">
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">1</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Open Windows Security</h3>
+                            <p class="text-gray-400 text-xs">Go to <strong class="text-gray-300">Settings → Privacy & security → Windows Security</strong>, or search for "Windows Security" in the Start menu.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">2</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Go to App & browser control</h3>
+                            <p class="text-gray-400 text-xs">Click on <strong class="text-gray-300">App & browser control</strong>, then click <strong class="text-gray-300">Smart App Control settings</strong>.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">3</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Set Smart App Control to Off</h3>
+                            <p class="text-gray-400 text-xs">Select <strong class="text-gray-300">Off</strong> to disable Smart App Control. This allows unsigned apps like ClicoClicker to run.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">4</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Run the installer again</h3>
+                            <p class="text-gray-400 text-xs">After disabling Smart App Control, run <strong class="text-gray-300">ClicoClicker-Setup.exe</strong> again. It should now install without issues.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="fade-in">
+                    <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 text-center">Smart App Control must be set to Off</p>
+                    <img src="../assets/smart-app-control.png" alt="Smart App Control settings — set to Off" class="rounded-2xl w-full max-w-2xl mx-auto" style="border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 50px rgba(0,0,0,0.4);">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SmartScreen bypass -->
+    <section class="py-16 section-alt">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Bypass SmartScreen Warning</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">If you see "Windows protected your PC" when running the installer, follow these steps.</p>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-4 fade-in">
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">1</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Click "More info"</h3>
+                            <p class="text-gray-400 text-xs">On the SmartScreen warning dialog, click the <strong class="text-gray-300">More info</strong> link to reveal additional options.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">2</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Click "Run anyway"</h3>
+                            <p class="text-gray-400 text-xs">After clicking "More info", a <strong class="text-gray-300">Run anyway</strong> button will appear. Click it to proceed with the installation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Disable Antivirus -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Temporarily Disable Your Antivirus</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Some antivirus software may quarantine or block the installer. Temporarily disable it during installation, then re-enable it after.</p>
+            </div>
+            <div class="max-w-3xl mx-auto">
+                <div class="space-y-4 mb-10 fade-in">
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">1</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Open Windows Security</h3>
+                            <p class="text-gray-400 text-xs">Go to <strong class="text-gray-300">Settings → Privacy & security → Windows Security</strong>, then click <strong class="text-gray-300">Virus & threat protection</strong>.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">2</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Manage settings</h3>
+                            <p class="text-gray-400 text-xs">Under <strong class="text-gray-300">Virus & threat protection settings</strong>, click <strong class="text-gray-300">Manage settings</strong>.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">3</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Turn off Real-time protection</h3>
+                            <p class="text-gray-400 text-xs">Toggle <strong class="text-gray-300">Real-time protection</strong> to <strong class="text-gray-300">Off</strong>. Windows will ask for confirmation — click Yes.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">4</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Install ClicoClicker</h3>
+                            <p class="text-gray-400 text-xs">Run <strong class="text-gray-300">ClicoClicker-Setup.exe</strong> and complete the installation.</p>
+                        </div>
+                    </div>
+                    <div class="card p-5 flex items-start gap-4">
+                        <div class="step-num">5</div>
+                        <div>
+                            <h3 class="font-semibold text-white text-sm mb-1">Re-enable Real-time protection</h3>
+                            <p class="text-gray-400 text-xs">After installation, go back and toggle <strong class="text-gray-300">Real-time protection</strong> back to <strong class="text-gray-300">On</strong>. Windows may also re-enable it automatically after some time.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="warning-card p-5 fade-in">
+                    <div class="flex items-start gap-3">
+                        <i class="fas fa-lightbulb text-yellow-500 mt-0.5"></i>
+                        <p class="text-gray-400 text-xs leading-relaxed">
+                            <strong class="text-gray-300">Using a third-party antivirus?</strong> Open your antivirus settings and temporarily disable real-time scanning or add an exclusion for the ClicoClicker installer and installation folder (typically <strong class="text-gray-300">C:\Users\YourName\AppData\Local\Programs\clicoclicker</strong>).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VirusTotal proof -->
+    <section class="py-16">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12 fade-in">
+                <h2 class="text-2xl md:text-3xl font-bold text-white">Verified Safe on VirusTotal</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">The installer has been scanned by 63 security vendors. Zero detections.</p>
+            </div>
+            <div class="max-w-3xl mx-auto fade-in">
+                <img src="../assets/virus-total.png" alt="VirusTotal scan results — 0/63 detections" class="rounded-2xl w-full" style="border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 50px rgba(0,0,0,0.4);">
+                <p class="text-center mt-4 text-gray-500 text-xs">0/63 security vendors flagged this file as malicious</p>
+            </div>
+            <div class="max-w-3xl mx-auto mt-10 fade-in">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="card p-5 text-center">
+                        <i class="fas fa-shield-alt accent-icon mb-3 block text-lg"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">0/63 Detections</h3>
+                        <p class="text-gray-400 text-xs">No security vendor flagged the file.</p>
+                    </div>
+                    <div class="card p-5 text-center">
+                        <i class="fas fa-code accent-icon mb-3 block text-lg"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">Open Source</h3>
+                        <p class="text-gray-400 text-xs">Every line of code is public on GitHub.</p>
+                    </div>
+                    <div class="card p-5 text-center">
+                        <i class="fas fa-eye-slash accent-icon mb-3 block text-lg"></i>
+                        <h3 class="font-semibold text-white text-sm mb-1">No Telemetry</h3>
+                        <p class="text-gray-400 text-xs">No data collection, no tracking, no network calls.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back to download -->
+    <section class="py-16 section-alt">
+        <div class="container mx-auto px-6 text-center fade-in">
+            <h2 class="text-2xl font-bold text-white mb-4">Ready to install?</h2>
+            <p class="text-gray-400 mb-8 text-sm">After following the steps above, install ClicoClicker normally.</p>
+            <a href="index.html#download" class="outline-btn inline-flex items-center gap-2 text-white px-8 py-3.5 rounded-xl font-semibold text-sm">
+                <i class="fas fa-arrow-left"></i> Back to Download
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-10" style="border-top: 1px solid rgba(255,255,255,0.04);">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-3">
+                    <img src="../assets/icon.png" alt="ClicoClicker" class="h-6 w-6 opacity-60">
+                    <p class="text-gray-500 text-sm">Created by Pedro Borges</p>
+                </div>
+                <div class="flex items-center gap-6 text-sm">
+                    <a href="index.html" class="text-gray-500 hover:text-white transition-colors">Home</a>
+                    <a href="index.html#download" class="text-gray-500 hover:text-white transition-colors">Download</a>
+                    <a href="https://github.com/pedroborgesdev/ClicoClicker.git" class="text-gray-500 hover:text-white transition-colors">GitHub</a>
+                </div>
+                <p class="text-gray-600 text-xs">MIT License</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu
+        document.getElementById('menuButton').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.add('active');
+        });
+        document.getElementById('closeButton').addEventListener('click', () => {
+            document.getElementById('mobileMenu').classList.remove('active');
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('mobileMenu').classList.remove('active');
+                }
+            });
+        });
+
+        // Scroll fade-in
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

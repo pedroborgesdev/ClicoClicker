@@ -8,6 +8,7 @@ import ListeningOverlay from '../components/ListeningOverlay/ListeningOverlay.ts
 
 interface LayoutProps {
   children: React.ReactNode;
+  sidebar: React.ReactNode;
   theme: ThemeName;
   onThemeChange: (theme: ThemeName) => void;
   mode: ClickerMode;
@@ -20,6 +21,7 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({
   children,
+  sidebar,
   theme,
   onThemeChange,
   mode,
@@ -41,40 +43,44 @@ const Layout: React.FC<LayoutProps> = ({
 
         <ListeningOverlay isListening={isListening} />
 
-        <main className="flex-1 min-h-0 pt-3 pb-3 px-4 w-full max-w-4xl mx-auto text-gray-200 flex flex-col items-center gap-3">
-          <div className="flex w-full rounded-xl p-0.5 border border-white/[0.05]" style={{ background: 'rgba(255,255,255,0.02)' }}>
-            <button
-              onClick={() => !isClicking && onModeChange('auto')}
-              disabled={isClicking}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                mode === 'auto' ? '' : 'text-white/40 hover:text-white/60'
-              } ${isClicking ? 'cursor-not-allowed' : ''}`}
-              style={mode === 'auto' ? {
-                background: `rgba(var(--accent), 0.12)`,
-                color: `rgb(var(--accent))`,
-                boxShadow: `0 0 12px rgba(var(--accent), 0.08)`
-              } : {}}
-            >
-              Auto Clicker
-            </button>
-            <button
-              onClick={() => !isClicking && onModeChange('burst')}
-              disabled={isClicking}
-              className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
-                mode === 'burst' ? '' : 'text-white/40 hover:text-white/60'
-              } ${isClicking ? 'cursor-not-allowed' : ''}`}
-              style={mode === 'burst' ? {
-                background: `rgba(var(--accent), 0.12)`,
-                color: `rgb(var(--accent))`,
-                boxShadow: `0 0 12px rgba(var(--accent), 0.08)`
-              } : {}}
-            >
-              Burst Clicker
-            </button>
-          </div>
+        <div className="flex flex-row flex-1 min-h-0">
+          {sidebar}
 
-          {children}
-        </main>
+          <main className="flex-1 min-h-0 min-w-0 pt-3 pb-3 px-4 w-full max-w-4xl mx-auto text-gray-200 flex flex-col items-center gap-3">
+            <div className="flex w-full rounded-xl p-0.5 border border-white/[0.05]" style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <button
+                onClick={() => !isClicking && onModeChange('auto')}
+                disabled={isClicking}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                  mode === 'auto' ? '' : 'text-white/40 hover:text-white/60'
+                } ${isClicking ? 'cursor-not-allowed' : ''}`}
+                style={mode === 'auto' ? {
+                  background: `rgba(var(--accent), 0.12)`,
+                  color: `rgb(var(--accent))`,
+                  boxShadow: `0 0 12px rgba(var(--accent), 0.08)`
+                } : {}}
+              >
+                Auto Clicker
+              </button>
+              <button
+                onClick={() => !isClicking && onModeChange('burst')}
+                disabled={isClicking}
+                className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 ${
+                  mode === 'burst' ? '' : 'text-white/40 hover:text-white/60'
+                } ${isClicking ? 'cursor-not-allowed' : ''}`}
+                style={mode === 'burst' ? {
+                  background: `rgba(var(--accent), 0.12)`,
+                  color: `rgb(var(--accent))`,
+                  boxShadow: `0 0 12px rgba(var(--accent), 0.08)`
+                } : {}}
+              >
+                Burst Clicker
+              </button>
+            </div>
+
+            {children}
+          </main>
+        </div>
 
         <footer className="w-full z-[60]">
           <AppInfo />
