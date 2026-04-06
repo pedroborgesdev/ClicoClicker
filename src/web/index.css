@@ -257,6 +257,28 @@
   --dropdown-to: rgba(26, 22, 12, 0.98);
 }
 
+/* ⚫ CARBON */
+[data-theme="carbon"] {
+  --bg-1: #0e0e0e;
+  --bg-2: #141414;
+  --bg-3: #0a0a0a;
+
+  --titlebar-from: rgba(20, 20, 20, 0.98);
+  --titlebar-to: rgba(12, 12, 12, 0.98);
+
+  --accent: 160, 160, 160;
+  --accent-hex: #A0A0A0;
+  --accent-gradient-from: #888888;
+  --accent-gradient-to: #555555;
+
+  --accent-secondary: 200, 200, 200;
+  --accent-secondary-hex: #C8C8C8;
+
+  --dropdown-border: rgba(160, 160, 160, 0.15);
+  --dropdown-from: rgba(20, 20, 20, 0.98);
+  --dropdown-to: rgba(12, 12, 12, 0.98);
+}
+
 body {
     color: #fff;
     user-select: none;

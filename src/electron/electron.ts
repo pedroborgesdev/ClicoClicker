@@ -4,7 +4,7 @@ import { spawn, ChildProcessWithoutNullStreams, exec } from 'child_process';
 
 const isDev = process.env.IS_DEV === "true";
 
-let clickerProcess: ChildProcessWithoutNullStreams | null = null;
+const clickerProcesses: Map<number, ChildProcessWithoutNullStreams> = new Map();
 
 const scriptPath = isDev
     ? path.join(process.cwd(), 'src', 'scripts')
@@ -22,7 +22,7 @@ const pyPath = process.platform === 'win32'
 
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
-        width: 480,
+        width: 530,
         height: 620,
         center: true,
         autoHideMenuBar: true,
@@ -73,9 +73,10 @@ app.whenReady().then(() => {
 });
 
 app.on('window-all-closed', () => {
-    if (clickerProcess) {
-        clickerProcess.kill('SIGKILL');
+    for (const proc of clickerProcesses.values()) {
+        proc.kill('SIGKILL');
     }
+    clickerProcesses.clear();
     if (process.platform !== 'darwin') {
         app.quit();
     }
@@ -88,12 +89,12 @@ ipcMain.handle('maximize-app', () => {
     else window?.maximize();
 });
 ipcMain.handle('close-app', () => {
-    console.log('[App] Close requested from renderer, terminating clicker process if running and closing app.');
-    if (clickerProcess) {
-        console.log(`[App] Terminating clicker process with PID: ${clickerProcess.pid}`);
-        clickerProcess.kill('SIGKILL');
-        clickerProcess = null;
+    console.log('[App] Close requested from renderer, terminating all clicker processes and closing app.');
+    for (const [sessionId, proc] of clickerProcesses.entries()) {
+        console.log(`[App] Terminating clicker process for session ${sessionId} with PID: ${proc.pid}`);
+        proc.kill('SIGKILL');
     }
+    clickerProcesses.clear();
     BrowserWindow.getFocusedWindow()?.close();
 });
 
@@ -152,13 +153,13 @@ ipcMain.handle('listen-for-hotkey', () => {
     });
 });
 
-ipcMain.handle('start-clicker', (event, settings) => {
-    if (clickerProcess) {
-        console.log(`[AutoClicker] Terminating old process (PID: ${clickerProcess.pid}) to start a new one.`);
-
-        clickerProcess.removeAllListeners(); 
-        clickerProcess.kill('SIGKILL');
-        clickerProcess = null; 
+ipcMain.handle('start-clicker', (event, sessionId: number, settings) => {
+    const existing = clickerProcesses.get(sessionId);
+    if (existing) {
+        console.log(`[AutoClicker S${sessionId}] Terminating old process (PID: ${existing.pid}) to start a new one.`);
+        existing.removeAllListeners();
+        existing.kill('SIGKILL');
+        clickerProcesses.delete(sessionId);
     }
 
     const binaryArgs = [
@@ -172,37 +173,38 @@ ipcMain.handle('start-clicker', (event, settings) => {
         binaryArgs.push('--hold-to-click');
     }
 
-    console.log(`[Starting AutoClicker]: auto_clicker.py with args: ${binaryArgs.join(' ')}`);
+    console.log(`[Starting AutoClicker S${sessionId}]: auto_clicker.py with args: ${binaryArgs.join(' ')}`);
 
-    clickerProcess = spawn(pyPath, [path.join(scriptPath, 'auto_clicker.py'), ...binaryArgs]);
-    console.log(`[AutoClicker] New process started with PID: ${clickerProcess.pid}`);
+    const proc = spawn(pyPath, [path.join(scriptPath, 'auto_clicker.py'), ...binaryArgs]);
+    clickerProcesses.set(sessionId, proc);
+    console.log(`[AutoClicker S${sessionId}] New process started with PID: ${proc.pid}`);
 
-    clickerProcess.stdout.on('data', (data) => {
-        console.log(`[AutoClicker Info]: ${data.toString().trim()}`);
+    proc.stdout.on('data', (data) => {
+        console.log(`[AutoClicker S${sessionId} Info]: ${data.toString().trim()}`);
     });
-    clickerProcess.stderr.on('data', (data) => {
-        console.error(`[AutoClicker Error]: ${data.toString().trim()}`);
-    });
-    
-    clickerProcess.on('close', (code) => {
-        console.log(`[AutoClicker Finished] Process with PID ${clickerProcess?.pid} finished with code: ${code}`);
-        clickerProcess = null; 
+    proc.stderr.on('data', (data) => {
+        console.error(`[AutoClicker S${sessionId} Error]: ${data.toString().trim()}`);
     });
 
-    clickerProcess.on('error', (err) => {
-        console.error(`[AutoClicker] Failed to start process: ${err.message}`);
-        clickerProcess = null;
+    proc.on('close', (code) => {
+        console.log(`[AutoClicker S${sessionId} Finished] Process with PID ${proc.pid} finished with code: ${code}`);
+        clickerProcesses.delete(sessionId);
+    });
+
+    proc.on('error', (err) => {
+        console.error(`[AutoClicker S${sessionId}] Failed to start process: ${err.message}`);
+        clickerProcesses.delete(sessionId);
     });
 });
 
 
-ipcMain.handle('start-burst-clicker', (event, settings) => {
-    if (clickerProcess) {
-        console.log(`[BurstClicker] Terminating old process (PID: ${clickerProcess.pid}) to start a new one.`);
-
-        clickerProcess.removeAllListeners();
-        clickerProcess.kill('SIGKILL');
-        clickerProcess = null;
+ipcMain.handle('start-burst-clicker', (event, sessionId: number, settings) => {
+    const existing = clickerProcesses.get(sessionId);
+    if (existing) {
+        console.log(`[BurstClicker S${sessionId}] Terminating old process (PID: ${existing.pid}) to start a new one.`);
+        existing.removeAllListeners();
+        existing.kill('SIGKILL');
+        clickerProcesses.delete(sessionId);
     }
 
     const binaryArgs = [
@@ -211,42 +213,43 @@ ipcMain.handle('start-burst-clicker', (event, settings) => {
         '--button', settings.button,
     ];
 
-    console.log(`[Starting BurstClicker]: burst_clicker.py with args: ${binaryArgs.join(' ')}`);
+    console.log(`[Starting BurstClicker S${sessionId}]: burst_clicker.py with args: ${binaryArgs.join(' ')}`);
 
-    clickerProcess = spawn(pyPath, [path.join(scriptPath, 'burst_clicker.py'), ...binaryArgs]);
-    console.log(`[BurstClicker] New process started with PID: ${clickerProcess.pid}`);
+    const proc = spawn(pyPath, [path.join(scriptPath, 'burst_clicker.py'), ...binaryArgs]);
+    clickerProcesses.set(sessionId, proc);
+    console.log(`[BurstClicker S${sessionId}] New process started with PID: ${proc.pid}`);
 
-    clickerProcess.stdout.on('data', (data) => {
-        console.log(`[BurstClicker Info]: ${data.toString().trim()}`);
+    proc.stdout.on('data', (data) => {
+        console.log(`[BurstClicker S${sessionId} Info]: ${data.toString().trim()}`);
     });
-    clickerProcess.stderr.on('data', (data) => {
-        console.error(`[BurstClicker Error]: ${data.toString().trim()}`);
-    });
-
-    clickerProcess.on('close', (code) => {
-        console.log(`[BurstClicker Finished] Process with PID ${clickerProcess?.pid} finished with code: ${code}`);
-        clickerProcess = null;
+    proc.stderr.on('data', (data) => {
+        console.error(`[BurstClicker S${sessionId} Error]: ${data.toString().trim()}`);
     });
 
-    clickerProcess.on('error', (err) => {
-        console.error(`[BurstClicker] Failed to start process: ${err.message}`);
-        clickerProcess = null;
+    proc.on('close', (code) => {
+        console.log(`[BurstClicker S${sessionId} Finished] Process with PID ${proc.pid} finished with code: ${code}`);
+        clickerProcesses.delete(sessionId);
+    });
+
+    proc.on('error', (err) => {
+        console.error(`[BurstClicker S${sessionId}] Failed to start process: ${err.message}`);
+        clickerProcesses.delete(sessionId);
     });
 });
 
 
-ipcMain.handle('stop-clicker', () => {
-    if (!clickerProcess || !clickerProcess.pid) {
-        console.log('[Clicker] No valid process to terminate.');
+ipcMain.handle('stop-clicker', (event, sessionId: number) => {
+    const proc = clickerProcesses.get(sessionId);
+    if (!proc || !proc.pid) {
+        console.log(`[Clicker S${sessionId}] No valid process to terminate.`);
         return false;
     }
 
-    const pid = clickerProcess.pid;
-    // Null out immediately to prevent repeated calls from killing the same PID
-    clickerProcess.removeAllListeners();
-    clickerProcess = null;
+    const pid = proc.pid;
+    proc.removeAllListeners();
+    clickerProcesses.delete(sessionId);
 
-    console.log(`[Stopping Clicker] Starting process tree termination for PID: ${pid}`);
+    console.log(`[Stopping Clicker S${sessionId}] Starting process tree termination for PID: ${pid}`);
 
     let command: string;
 
@@ -256,13 +259,13 @@ ipcMain.handle('stop-clicker', () => {
         command = `pkill -P ${pid}`;
     }
 
-    console.log(`[Stopping Clicker] Executing command: ${command}`);
+    console.log(`[Stopping Clicker S${sessionId}] Executing command: ${command}`);
 
     exec(command, (error) => {
         if (error) {
-            console.warn(`[Stopping Clicker] Termination warning (can be normal if already ended): ${error.message}`);
+            console.warn(`[Stopping Clicker S${sessionId}] Termination warning (can be normal if already ended): ${error.message}`);
         } else {
-            console.log(`[Stopping Clicker] Process tree for PID ${pid} terminated successfully.`);
+            console.log(`[Stopping Clicker S${sessionId}] Process tree for PID ${pid} terminated successfully.`);
         }
     });
 

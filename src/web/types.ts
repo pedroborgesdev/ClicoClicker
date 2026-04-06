@@ -15,3 +15,16 @@ export interface BurstClickerSettings {
   delay: number;
   button: 'left' | 'right';
 }
+
+export interface SessionConfig {
+  id: number;
+  mode: ClickerMode;
+  cps: number;
+  variation: number;
+  hotkey: string;
+  desiredKey: DesiredKey;
+  holdToClick: boolean;
+  burstClicks: number;
+  burstDelay: number;
+  burstDesiredKey: DesiredKey;
+}

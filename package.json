@@ -1,7 +1,7 @@
 {
   "name": "clicoclicker",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "build/electron/electron.js",
   "author": {
     "name": "Pedro Borges",
@@ -50,8 +50,8 @@
   },
   "build": {
     "appId": "com.clicoclicker.package",
-    "productName": "clicoclicker",
-    "copyright": "Copyright © 2025 Pedro Borges",
+    "productName": "ClicoClicker",
+    "copyright": "Copyright © 2026 Pedro Borges",
     "files": [
       "build/**/*"
     ],
@@ -65,7 +65,7 @@
         ]
       },
       {
-        "from": "src/python/",
+        "from": "python/",
         "to": "python",
         "filter": [
           "**/*",
