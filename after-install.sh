@@ -1,6 +1,6 @@
 #!/bin/bash
 
-chown root:root "/opt/clicoclicker/chrome-sandbox"
-chmod 4755 "/opt/clicoclicker/chrome-sandbox"
+chown root:root "/opt/ClicoClicker/chrome-sandbox"
+chmod 4755 "/opt/ClicoClicker/chrome-sandbox"
 
 exit 0
