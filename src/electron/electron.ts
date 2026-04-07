@@ -18,7 +18,7 @@ const basePath = isDev
 
 const pyPath = process.platform === 'win32'
     ? path.join(basePath, 'python.exe')
-    : path.join(basePath, 'bin', 'python');
+    : path.join(basePath, 'bin', 'python3');
 
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
@@ -116,7 +116,7 @@ ipcMain.handle('listen-for-hotkey', () => {
             if (process.platform === 'win32') {
                 command = `taskkill /PID ${pid} /T /F`;
             } else {
-                command = `pkill -P ${pid}`;
+                command = `kill -9 ${pid}`;
             }
 
             console.log(`[Listen Hotkey] Terminating process tree for PID ${pid} with command: "${command}"`);
@@ -256,7 +256,7 @@ ipcMain.handle('stop-clicker', (event, sessionId: number) => {
     if (process.platform === 'win32') {
         command = `taskkill /PID ${pid} /T /F`;
     } else {
-        command = `pkill -P ${pid}`;
+        command = `kill -9 ${pid}`;
     }
 
     console.log(`[Stopping Clicker S${sessionId}] Executing command: ${command}`);
