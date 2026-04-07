@@ -18,7 +18,7 @@ const basePath = isDev
 
 const pyPath = process.platform === 'win32'
     ? path.join(basePath, 'python.exe')
-    : path.join(basePath, 'python');
+    : path.join(basePath, 'bin', 'python');
 
 function createWindow(): void {
     const windowOptions: BrowserWindowConstructorOptions = {
